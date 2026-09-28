@@ -2,10 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AppForSEII.API.Models;
 
-public class Material
+public class Material 
 {
     [Key]
-    public int IdMaterial { get; set; }
+    public int IdMateria { get; set; }
 
     [Required]
     [StringLength(100)]
