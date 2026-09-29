@@ -20,5 +20,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<Material> Materials { get; set; }
 
+    public DbSet<Reserva> Reservas { get; set; }
+
 
 }
