@@ -1,19 +1,36 @@
 namespace AppForSEII.API.Models;
 
 
-//completar los atributos
+public enum MetodoPago
+{
+        Bizum,
+    Efectivo,
+    Tarjeta,
+}
 public class Reserva
 {
-    public int Id { get; set; }
+    [Required]
+    [StringLength(100)]
+    public string Apellidos { get; set; } = string.Empty;
+
+    [Required]
+    public string Dni { get; set; } = string.Empty;
+
+    [Required]
+
     public DateTime FechaReserva { get; set; } = DateTime.Now;
-    
-   
-    public string ClienteNombre { get; set; } = string.Empty;
-    public string ClienteApellidos { get; set; } = string.Empty;
-    public string ClienteDni { get; set; } = string.Empty;
-    
-    
-    public double PrecioTotal { get; set; }
-    
-   
+
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
+    public MetodoPago MetodoPago { get; set; }
+
+    [Required]
+    [StringLength(50)]
+    public string NombreCliente { get; set; } = string.Empty;
+
+    [Required]
+    [Range(0, 10000)]
+    public double PrecioTotal { get; set; }   
 }
