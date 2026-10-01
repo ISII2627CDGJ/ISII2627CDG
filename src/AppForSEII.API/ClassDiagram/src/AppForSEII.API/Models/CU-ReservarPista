@@ -1,5 +1,0 @@
-@startuml
-
-!include .\\Reservar.puml
-!include .\\Pista.puml
-@startuml
