@@ -1,4 +1,4 @@
-    @startuml
+@startuml
 class Pista {
     + IdPista : int <<get>> <<set>>
     + NombrePista : string <<get>> <<set>>
