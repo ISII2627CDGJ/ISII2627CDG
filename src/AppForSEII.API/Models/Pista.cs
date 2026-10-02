@@ -2,7 +2,8 @@ namespace AppForSEII.API.Models;
 
 
 public class Pista
-{    [Key]
+{   
+     [Key]
     public int IdPista { get; set; }
 
     [Required]
@@ -18,7 +19,17 @@ public class Pista
     [Required]
     [Range(0, int.MaxValue)]
     public int Stock { get; set; }
+
+    //Relaciones
+
+    //Tipo deporte principal
+    public TipoDeporte TipoDeporte { get; set; }
     
+    // Relación 1:N hacia PistaReservada
+    public List<PistaReservada> PistasReservadas { get; set; }  
+
+    //constructores
+
     public Pista(int idPista, string nombrePista, string nPersonas, double precio, int stock)
     {
         IdPista = idPista;
@@ -26,8 +37,9 @@ public class Pista
         NPersonas = nPersonas;
         Precio = precio;
         Stock = stock;
-    }
+    }   
 
+    //equals
     public override bool Equals(object? obj)
     {
         if (obj is Pista other)

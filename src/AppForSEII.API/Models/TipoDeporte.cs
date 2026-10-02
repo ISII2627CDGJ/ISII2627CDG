@@ -17,28 +17,36 @@ public class TipoDeporte
     public string Nombre { get; set; }
     [Required]
     public string NombreTipoDeporte { get; set; }
-    
+
 
     //Relacion 1--N con pista
     public List<Pista> Pistas { get; set; }
 
-        // Constructores
-        public TipoDeporte() { }
+    // Constructores
+    public TipoDeporte() { }
 
-        public TipoDeporte(int id, string nombre, string nombreTipoDeporte, string competiciones, string materiales)
-        {
-            Id = id;
-            Nombre = nombre;
-            NombreTipoDeporte = nombreTipoDeporte;
-            Competiciones = competiciones;
-            Materiales = materiales;
-        }
-        public override bool Equals(object obj)
-        {
-            return obj is TipoDeporte deporte && Id == deporte.Id;
-        }
+    public TipoDeporte(int id, string nombre, string nombreTipoDeporte, string competiciones, string materiales)
+    {
+        Id = id;
+        Nombre = nombre;
+        NombreTipoDeporte = nombreTipoDeporte;
+        Competiciones = competiciones;
+        Materiales = materiales;
+    }
 
-       
+    //equals
     
-     
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+            return false;
+
+        var other = (TipoDeporte)obj;
+        return Id == other.Id &&
+               Nombre == other.Nombre &&
+               NombreTipoDeporte == other.NombreTipoDeporte &&
+               Competiciones == other.Competiciones &&
+               Materiales == other.Materiales;
+    }  
+    
 }
