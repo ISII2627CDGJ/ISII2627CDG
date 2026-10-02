@@ -40,7 +40,7 @@ namespace AppForSEII.API.Data {
         public static void SeedUsers(UserManager<ApplicationUser> userManager, List<string> roles) {
             //first, it checks the user does not already exist in the DB
             if (userManager.FindByNameAsync("elena@uclm.es").Result == null) {
-                ApplicationUser user = new ApplicationUser("1", "Elena", "Navarro Martínez", "elena@uclm.es");
+                ApplicationUser user = new ApplicationUser("1", "Elena", "Navarro Martínez", "elena@uclm.es","00000000A",25,"Mujer");
                 user.EmailConfirmed = true;
 
                 var result = userManager.CreateAsync(user, "Password1234%");
@@ -55,7 +55,7 @@ namespace AppForSEII.API.Data {
 
             if (userManager.FindByNameAsync("peter@uclm.es").Result == null) {
                 //A customer class has been defined because it has different attributes (purchase, rental, etc.)
-                ApplicationUser user = new ApplicationUser("3", "Peter", "Jackson", "peter@uclm.es");
+                ApplicationUser user = new ApplicationUser("3", "Peter", "Jackson", "peter@uclm.es","00000000B",25,"Hombre");
                 user.EmailConfirmed = true;
 
                 var result = userManager.CreateAsync(user, "OtherPass12$");
