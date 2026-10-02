@@ -22,16 +22,20 @@ public class Inscripcion
         public ApplicationUser Cliente { get; set; } = null!;
         
 
-        public Inscripcion(int id, DateTime fechaInscripcion, decimal precioTotal, string datosPago, MetodoPago metodoPago, ApplicationUser cliente, IList<ClaseInscrita> clasesInscritas)
+        public Inscripcion() 
         {
-            Id = id;
-            FechaInscripcion = fechaInscripcion;
-            PrecioTotal = precioTotal;
-            DatosPago = datosPago;
-            MetodoPago = metodoPago;
-            Cliente = cliente;
-            ClasesInscritas = clasesInscritas ?? new List<ClaseInscrita>();
+            ClasesInscritas = new List<ClaseInscrita>();
         }
+        public Inscripcion(int id, DateTime fechaInscripcion, decimal precioTotal, string datosPago, MetodoPago metodoPago, ApplicationUser cliente, IList<ClaseInscrita> clasesInscritas)
+    {
+        Id = id;
+        FechaInscripcion = fechaInscripcion;
+        PrecioTotal = precioTotal;
+        DatosPago = datosPago;
+        MetodoPago = metodoPago;
+        Cliente = cliente;
+        ClasesInscritas = clasesInscritas ?? new List<ClaseInscrita>();
+    }
 
 
         public override bool Equals(object obj)
