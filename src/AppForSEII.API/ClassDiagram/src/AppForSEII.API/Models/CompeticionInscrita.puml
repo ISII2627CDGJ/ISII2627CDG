@@ -5,6 +5,7 @@ class CompeticionInscrita {
     + InscripcionId : int <<get>> <<set>>
     + Inscripcion : InscripcionComp <<get>> <<set>>
     + ProblemasFisicos : string? <<get>> <<set>>
+    + CompeticionesInscritas : IList<CompeticionInscrita> <<get>> <<set>>
     + CompeticionInscrita()
     + CompeticionInscrita(competicionId : int, inscripcionId : int, problemasFisicos : string?)
     + <<override>> Equals(obj : object?) : bool
