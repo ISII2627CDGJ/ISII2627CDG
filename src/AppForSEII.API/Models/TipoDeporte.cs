@@ -26,6 +26,9 @@ public class TipoDeporte
     //Relacion 1--N con pista
     public List<Pista> Pistas { get; set; }
 
+    //Relacion 1:N con ClaseDeportiva
+    public List<ClaseDeportiva> ClasesDeportivas { get; set; } = new List<ClaseDeportiva>();
+
     // Constructores
     
     public TipoDeporte() { }

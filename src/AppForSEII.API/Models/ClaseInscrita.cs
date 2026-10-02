@@ -11,9 +11,10 @@ public class ClaseInscrita
 
         
         public int ClaseDeportivaId { get; set; }
-        public ClaseDeportiva ClaseDeportiva { get; set; }
 
-      
+        //relaciones
+        public ClaseDeportiva ClaseDeportiva { get; set; }
+        
         public int InscripcionId { get; set; }
        // public Inscripcion Inscripcion { get; set; }
 

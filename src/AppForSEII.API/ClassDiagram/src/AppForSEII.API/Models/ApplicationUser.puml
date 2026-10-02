@@ -9,5 +9,7 @@ class ApplicationUser {
     + Sex : string? <<get>> <<set>>
     + Email : string? <<get>> <<set>>
 }
+
 IdentityUser <|-- ApplicationUser
+
 @enduml

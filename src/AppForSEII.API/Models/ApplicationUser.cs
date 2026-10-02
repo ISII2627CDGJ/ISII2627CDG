@@ -33,6 +33,9 @@ public class ApplicationUser : IdentityUser
     [StringLength(20)]
     public string? Sex { get; set; }
 
+    public List<Inscripcion> Inscripciones { get; set; } = new List<Inscripcion>();
+
+
     public ApplicationUser(string id, string name, string surname, string userName, string dni, int age, string sex, string email)
         : this(id, name, surname, userName, dni, age, sex)
     {
