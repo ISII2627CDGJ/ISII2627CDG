@@ -8,6 +8,7 @@ class InscripcionComp {
     + ApellidosUsuario : string <<get>> <<set>>
     + DNI : string <<get>> <<set>>
     + Telefono : string <<get>> <<set>>
+       + CompeticionesInscritas : IList<CompeticionInscrita> <<get>> <<set>>
     + InscripcionComp()
     + InscripcionComp(fechaInscripcion : DateTime, precioTotal : decimal, metodoPago : string, nombreUsuario : string, apellidosUsuario : string, dni : string, telefono : string)
     + <<override>> Equals(obj : object) : boo

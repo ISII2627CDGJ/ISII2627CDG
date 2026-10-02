@@ -37,6 +37,7 @@ public class InscripcionComp
         DNI = dni;
         Telefono = telefono;
     }
+    public IList<CompeticionInscrita> CompeticionesInscritas { get; set; } = new List<CompeticionInscrita>();
     public InscripcionComp()
     {
     }

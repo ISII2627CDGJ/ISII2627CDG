@@ -1,0 +1,7 @@
+@startuml
+hide methods
+!include InscripcionComp.puml
+!include Competicion.puml
+!include CompeticionInscrita.puml
+!include TipoDeporte.puml
+@enduml
