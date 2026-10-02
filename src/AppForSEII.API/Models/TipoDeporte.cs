@@ -30,14 +30,15 @@ public class TipoDeporte
     
     public TipoDeporte() { }
 
-    public TipoDeporte(int id, string nombre, string nombreTipoDeporte, string competiciones, List<Material> materiales, string descripcion)
+    public TipoDeporte(int id, string nombre, string nombreTipoDeporte, string competiciones, string descripcion)
 {
     Id = id;
     Nombre = nombre;
     NombreTipoDeporte = nombreTipoDeporte;
     Competiciones = competiciones;
-    Materiales = materiales;
     Descripcion = descripcion;
+    
+    Materiales = new List<Material>();
     Pistas = new List<Pista>(); 
 }
 
@@ -53,7 +54,6 @@ public class TipoDeporte
            Nombre == other.Nombre &&
            NombreTipoDeporte == other.NombreTipoDeporte &&
            Competiciones == other.Competiciones &&
-           Materiales == other.Materiales &&
            Descripcion == other.Descripcion;
 }
 

@@ -5,10 +5,10 @@ class TipoDeporte {
     + Materiales : List<Material> <<get>> <<set>>
     + Nombre : string <<get>> <<set>>
     + NombreTipoDeporte : string <<get>> <<set>>
+    + Descripcion : string <<get>> <<set>>
     + Pistas : List<Pista> <<get>> <<set>>
     + TipoDeporte()
-    + description() : string <<get>> <<set>>
-    + TipoDeporte(id:int, nombre:string, nombreTipoDeporte:string, competiciones:string)
+    + TipoDeporte(id:int, nombre:string, nombreTipoDeporte:string, competiciones:string, descripcion:string)
     + <<override>> Equals(obj:object?) : bool
 }
 @enduml

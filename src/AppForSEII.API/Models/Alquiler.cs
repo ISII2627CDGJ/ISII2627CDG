@@ -33,7 +33,11 @@ public class Alquiler
     [Required]
     [Precision(7, 2)]
     public decimal PrecioTotal { get; set; }
-
+ 
+    // Relación 1-N con MaterialAlquilado
+    public List<MaterialAlquilado> MaterialesAlquilados { get; set; }
+ 
+    //constructores
     public Alquiler()
     {
     }
@@ -56,8 +60,9 @@ public class Alquiler
         MetodoPago = metodoPago;
         NumeroTelefono = numeroTelefono;
         PrecioTotal = precioTotal;
+        MaterialesAlquilados = new List<MaterialAlquilado>();
     }
-
+    //metodo equals 
     public override bool Equals(object? obj)
     {
         if (obj is Alquiler other)

@@ -1,7 +1,15 @@
 @startuml
 hide methods
+
 !include Material.puml
 !include MaterialAlquilado.puml
 !include Alquiler.puml
 !include TipoMaterial.puml
+!include TipoDeporte.puml
+
+TipoDeporte "1" -- "*" Material
+TipoMaterial "1" -- "*" Material
+Material "1" -- "*" MaterialAlquilado
+Alquiler "1" -- "*" MaterialAlquilado
+
 @enduml

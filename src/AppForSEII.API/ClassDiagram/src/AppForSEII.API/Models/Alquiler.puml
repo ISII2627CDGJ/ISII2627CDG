@@ -8,6 +8,7 @@ class Alquiler {
     + MetodoPago : string <<get>> <<set>>
     + NumeroTelefono : string <<get>> <<set>>
     + PrecioTotal : decimal <<get>> <<set>>
+    + MaterialesAlquilados : List<MaterialAlquilado> <<get>> <<set>>
     + Alquiler()
     + Alquiler(idAlquiler:int, nombreUsuario:string, apellidosUsuario:string, dni:string, fechaAlquiler:DateTime, metodoPago:string, numeroTelefono:string, precioTotal:decimal)
     + <<override>> Equals(obj:object?) : bool
