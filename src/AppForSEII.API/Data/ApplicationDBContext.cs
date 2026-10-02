@@ -26,6 +26,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     
     public DbSet<MaterialAlquilado> MaterialesAlquilados { get; set; }
     public DbSet<InscripcionComp> InscripcionesComp { get; set; }
-
+   
+    public DbSet<Alquiler> Alquileres { get; set; }
 
 }
