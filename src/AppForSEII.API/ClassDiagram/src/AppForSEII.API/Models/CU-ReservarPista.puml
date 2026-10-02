@@ -1,6 +1,6 @@
 @startuml
-
-!include .\\Reservar.puml
-!include .\\Pista.puml
-!include .\\TipoDeporte.puml
+!include Reservar.puml
+!include Pista.puml
+!include TipoDeporte.puml
+!include PistaReservada.puml
 @startuml
