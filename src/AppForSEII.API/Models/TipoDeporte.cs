@@ -27,17 +27,19 @@ public class TipoDeporte
     public List<Pista> Pistas { get; set; }
 
     // Constructores
+    
     public TipoDeporte() { }
 
-    public TipoDeporte(int id, string nombre, string nombreTipoDeporte, string competiciones, string materiales, string descripcion)
-    {
-        Id = id;
-        Nombre = nombre;
-        NombreTipoDeporte = nombreTipoDeporte;
-        Competiciones = competiciones;
-        Materiales = materiales;
-        Descripcion = descripcion;
-    }
+    public TipoDeporte(int id, string nombre, string nombreTipoDeporte, string competiciones, List<Material> materiales, string descripcion)
+{
+    Id = id;
+    Nombre = nombre;
+    NombreTipoDeporte = nombreTipoDeporte;
+    Competiciones = competiciones;
+    Materiales = materiales;
+    Descripcion = descripcion;
+    Pistas = new List<Pista>(); 
+}
 
     //metodo equals
     
@@ -54,7 +56,8 @@ public class TipoDeporte
                Materiales == other.Materiales &&
                Descripcion == other.Descripcion;
     }
-    
+               Competiciones == other.Competiciones;
+    }  
 
     
 }
