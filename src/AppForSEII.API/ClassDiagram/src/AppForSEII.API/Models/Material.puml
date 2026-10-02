@@ -4,5 +4,8 @@ class Material {
     + Nombre : string <<get>> <<set>>
     + Cantidad : int <<get>> <<set>>
     + Precio : double <<get>> <<set>>
+    + Material()
+    + Material(idMaterial:int, nombre:string, cantidad:int, precio:double)
+    + <<override>> Equals(obj:object?) : bool
 }
 @enduml
