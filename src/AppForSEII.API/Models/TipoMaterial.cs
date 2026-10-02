@@ -10,7 +10,11 @@ public class TipoMaterial
     [Required]
     [StringLength(100)]
     public string NombreTipoMaterial { get; set; } = string.Empty;
-
+    
+    // Relación 1-N con Material
+    public List<Material> Materiales { get; set; }
+    
+    //constructores
     public TipoMaterial()
     {
     }
@@ -19,8 +23,9 @@ public class TipoMaterial
     {
         IdTipoMaterial = idTipoMaterial;
         NombreTipoMaterial = nombreTipoMaterial;
+        Materiales = new List<Material>();
     }
-
+    //metodo equals 
     public override bool Equals(object? obj)
     {
         if (obj is TipoMaterial other)

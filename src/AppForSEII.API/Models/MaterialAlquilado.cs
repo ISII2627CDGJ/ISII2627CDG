@@ -20,17 +20,28 @@ public class MaterialAlquilado
     [Required]
     [Precision(7, 2)]
     public decimal Precio { get; set; }
+
+    // Relación N-1 con Material
+    public Material Material { get; set; }
+
+    // Relación N-1 con Alquiler
+    public Alquiler Alquiler { get; set; }
+     
+     //constructores
     public MaterialAlquilado()
 {
 }
-public MaterialAlquilado(int idMaterial, int idAlquiler, int cantidad, string? descripcion, decimal precio)
+public MaterialAlquilado(int idMaterial, int idAlquiler, int cantidad, string? descripcion, decimal precio, Material material,Alquiler alquiler)
 {
     IdMaterial = idMaterial;
     IdAlquiler = idAlquiler;
     Cantidad = cantidad;
     Descripcion = descripcion;
     Precio = precio;
+    Material = material;
+    Alquiler = alquiler;
 }
+     //metodo equals
 public override bool Equals(object? obj)
 {
     if (obj is MaterialAlquilado other)
