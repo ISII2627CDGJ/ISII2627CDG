@@ -10,8 +10,8 @@ public class TipoDeporte
     [StringLength(100)]
     public string Competiciones { get; set; } = string.Empty;
 
-    [Required]
-    public string Materiales { get; set; } = string.Empty;
+    // Relación 1-N con Material
+    public List<Material> Materiales { get; set; }
 
     [Required]
     public string Nombre { get; set; }
