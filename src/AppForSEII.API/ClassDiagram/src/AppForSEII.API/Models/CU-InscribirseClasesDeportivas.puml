@@ -1,0 +1,5 @@
+@startuml
+hide methods
+!include ClaseDeportiva.puml
+!include TipoDeporte.pul
+@enduml
