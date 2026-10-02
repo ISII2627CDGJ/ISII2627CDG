@@ -3,4 +3,9 @@
 !include Pista.puml
 !include TipoDeporte.puml
 !include PistaReservada.puml
+
+TipoDeporte "1" -- "*" Pista
+PistaReservada "1" -- "*" Pista
+Reserva "*" -- "1" PistaReservada
+
 @startuml
