@@ -43,21 +43,19 @@ public class TipoDeporte
 
     //metodo equals
     
-    public override bool Equals(object? obj)
-    {
-        if (obj == null || GetType() != obj.GetType())
-            return false;
+   public override bool Equals(object? obj)
+{
+    if (obj == null || GetType() != obj.GetType())
+        return false;
 
-        var other = (TipoDeporte)obj;
-        return Id == other.Id &&
-               Nombre == other.Nombre &&
-               NombreTipoDeporte == other.NombreTipoDeporte &&
-               Competiciones == other.Competiciones &&
-               Materiales == other.Materiales &&
-               Descripcion == other.Descripcion;
-    }
-               Competiciones == other.Competiciones;
-    }  
+    var other = (TipoDeporte)obj;
+    return Id == other.Id &&
+           Nombre == other.Nombre &&
+           NombreTipoDeporte == other.NombreTipoDeporte &&
+           Competiciones == other.Competiciones &&
+           Materiales == other.Materiales &&
+           Descripcion == other.Descripcion;
+}
 
     
 }
