@@ -14,7 +14,7 @@ public class Inscripcion
         public MetodoPago MetodoPago { get; set; }
 
    
-        public ApplicationUser Cliente { get; set; }
+
 
         //Relaciones 
         
