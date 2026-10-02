@@ -1,0 +1,15 @@
+@startuml
+class InscripcionComp {
+    + Id : int <<get>> <<set>>
+    + FechaInscripcion : DateTime <<get>> <<set>>
+    + PrecioTotal : decimal <<get>> <<set>>
+    + MetodoPago : string <<get>> <<set>>
+    + NombreUsuario : string <<get>> <<set>>
+    + ApellidosUsuario : string <<get>> <<set>>
+    + DNI : string <<get>> <<set>>
+    + Telefono : string <<get>> <<set>>
+    + InscripcionComp()
+    + InscripcionComp(fechaInscripcion : DateTime, precioTotal : decimal, metodoPago : string, nombreUsuario : string, apellidosUsuario : string, dni : string, telefono : string)
+    + <<override>> Equals(obj : object) : boo
+}
+@enduml
