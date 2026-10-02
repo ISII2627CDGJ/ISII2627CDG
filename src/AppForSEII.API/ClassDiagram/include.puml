@@ -1,5 +1,0 @@
-@startuml
-!include .\\ApplicationUser.puml
-!include .\\Material.puml
-!include .\\Reserva.puml
-@enduml

@@ -2,4 +2,5 @@
 
 !include .\\Reservar.puml
 !include .\\Pista.puml
+!include .\\TipoDeporte.puml
 @startuml
