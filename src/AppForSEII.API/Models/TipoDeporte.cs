@@ -10,8 +10,8 @@ public class TipoDeporte
     [StringLength(100)]
     public string Competiciones { get; set; } = string.Empty;
 
-    [Required]
-    public string Materiales { get; set; } = string.Empty;
+    // Relación 1-N con Material
+    public List<Material> Materiales { get; set; }
 
     [Required]
     public string Nombre { get; set; }
@@ -25,13 +25,12 @@ public class TipoDeporte
     // Constructores
     public TipoDeporte() { }
 
-    public TipoDeporte(int id, string nombre, string nombreTipoDeporte, string competiciones, string materiales)
+    public TipoDeporte(int id, string nombre, string nombreTipoDeporte, string competiciones)
     {
         Id = id;
         Nombre = nombre;
         NombreTipoDeporte = nombreTipoDeporte;
         Competiciones = competiciones;
-        Materiales = materiales;
     }
 
     //equals
@@ -45,8 +44,7 @@ public class TipoDeporte
         return Id == other.Id &&
                Nombre == other.Nombre &&
                NombreTipoDeporte == other.NombreTipoDeporte &&
-               Competiciones == other.Competiciones &&
-               Materiales == other.Materiales;
+               Competiciones == other.Competiciones;
     }  
     
 }
