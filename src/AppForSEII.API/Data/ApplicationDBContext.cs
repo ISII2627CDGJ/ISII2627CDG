@@ -35,4 +35,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
 
     public DbSet<ClaseDeportiva> ClaseDeportiva { get; set; }
+
+    public DbSet<PClaseInscrita> ClaseInscritas { get; set; }
 }
