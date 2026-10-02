@@ -16,8 +16,10 @@ public class Inscripcion
    
         public ApplicationUser Cliente { get; set; }
 
+        //Relaciones 
         
         public IList<ClaseInscrita> ClasesInscritas { get; set; } = new List<ClaseInscrita>();
+        public ApplicationUser Cliente { get; set; } = null!;
         
 
         public Inscripcion(int id, DateTime fechaInscripcion, decimal precioTotal, string datosPago, MetodoPago metodoPago, ApplicationUser cliente, IList<ClaseInscrita> clasesInscritas)

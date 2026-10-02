@@ -23,9 +23,10 @@ public class ClaseDeportiva
         public int TipoDeporteId { get; set; }
         public TipoDeporte TipoDeporte { get; set; }
 
-       
+       //Relaciones 
         public List<ClaseInscrita> ClasesInscritas { get; set; } = new List<ClaseInscrita>();
-
+        
+        public virtual TipoDeporte TipoDeporte { get; set; } = null!;
 
         public ClaseDeportiva()
         {
