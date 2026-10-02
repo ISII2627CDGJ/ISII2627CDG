@@ -15,7 +15,7 @@ public class ClaseInscrita
 
       
         public int InscripcionId { get; set; }
-        public Inscripcion Inscripcion { get; set; }
+       // public Inscripcion Inscripcion { get; set; }
 
         public ClaseInscrita()
         {
