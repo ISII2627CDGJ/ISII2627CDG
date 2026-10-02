@@ -3,4 +3,5 @@ hide methods
 !include Material.puml
 !include MaterialAlquilado.puml
 !include Alquiler.puml
+!include TipoMaterial.puml
 @enduml
