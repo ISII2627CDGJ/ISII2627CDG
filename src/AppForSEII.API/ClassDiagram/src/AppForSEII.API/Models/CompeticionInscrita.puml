@@ -1,0 +1,13 @@
+@startuml
+class CompeticionInscrita {
+    + CompeticionId : int <<get>> <<set>>
+    + Competicion : Competicion <<get>> <<set>>
+    + InscripcionId : int <<get>> <<set>>
+    + Inscripcion : InscripcionComp <<get>> <<set>>
+    + ProblemasFisicos : string? <<get>> <<set>>
+    + CompeticionInscrita()
+    + CompeticionInscrita(competicionId : int, inscripcionId : int, problemasFisicos : string?)
+    + <<override>> Equals(obj : object?) : bool
+    + <<override>> GetHashCode() : int
+}
+@enduml
