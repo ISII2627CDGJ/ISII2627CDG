@@ -1,0 +1,9 @@
+@startuml
+class TipoMaterial {
+    + IdTipoMaterial : int <<get>> <<set>>
+    + NombreTipoMaterial : string <<get>> <<set>>
+    + TipoMaterial()
+    + TipoMaterial(idTipoMaterial:int, nombreTipoMaterial:string)
+    + <<override>> Equals(obj:object?) : bool
+}
+@enduml
