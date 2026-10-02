@@ -1,0 +1,13 @@
+@startuml
+class Material {
+    + Id : int <<get>> <<set>>
+    + FechaInscripcion : DateTime <<get>> <<set>>
+    + PrecioTotal : decimal <<get>> <<set>>
+    + DatosPago : string <<get>> <<set>>
+    + MetodoPago : MetodoPago <<get>> <<set>>
+    + Cliente : ApplicationUser <<get>> <<set>>
+    + ClasesInscritas : IList<ClaseInscrita> <<get>> <<set>>
+}
+
+
+@enduml

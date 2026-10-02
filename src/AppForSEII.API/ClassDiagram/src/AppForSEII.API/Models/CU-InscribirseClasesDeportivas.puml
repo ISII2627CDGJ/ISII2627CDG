@@ -3,4 +3,5 @@ hide methods
 !include ClaseDeportiva.puml
 !include TipoDeporte.puml
 !include ClaseInscrita.puml
+!include Inscripcion.puml
 @enduml
