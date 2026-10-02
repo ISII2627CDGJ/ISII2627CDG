@@ -7,6 +7,7 @@ class TipoDeporte {
     + NombreTipoDeporte : string <<get>> <<set>>
     + Pistas : List<Pista> <<get>> <<set>>
     + TipoDeporte()
+    + description() : string <<get>> <<set>>
     + TipoDeporte(id:int, nombre:string, nombreTipoDeporte:string, competiciones:string)
     + <<override>> Equals(obj:object?) : bool
 }
