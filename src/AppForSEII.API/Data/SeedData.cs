@@ -19,14 +19,17 @@ namespace AppForSEII.API.Data {
                 logger.LogError(ex, "An error occurred seeding the Users in the Database.");
             }
 
- 
-
+            // --- AÑADIDO: Inicialización de Reservas ---
+            try {
+                SeedReservas(dbContext);
+            }
+            catch (Exception ex) {
+                logger.LogError(ex, "An error occurred seeding the Reservas in the Database.");
+            }
         }
 
         public static void SeedRoles(RoleManager<IdentityRole> roleManager, List<string> roles) {
-
             foreach (string roleName in roles) {
-                //it checks such role does not exist in the database 
                 if (!roleManager.RoleExistsAsync(roleName).Result) {
                     IdentityRole role = new IdentityRole();
                     role.Name = roleName;
@@ -34,11 +37,9 @@ namespace AppForSEII.API.Data {
                     IdentityResult roleResult = roleManager.CreateAsync(role).Result;
                 }
             }
-
         }
 
         public static void SeedUsers(UserManager<ApplicationUser> userManager, List<string> roles) {
-            //first, it checks the user does not already exist in the DB
             if (userManager.FindByNameAsync("elena@uclm.es").Result == null) {
                 ApplicationUser user = new ApplicationUser("1", "Elena", "Navarro Martínez", "elena@uclm.es","00000000A",25,"Mujer");
                 user.EmailConfirmed = true;
@@ -47,33 +48,51 @@ namespace AppForSEII.API.Data {
                 result.Wait();
 
                 if (result.IsCompletedSuccessfully) {
-                    //administrator role
                     userManager.AddToRoleAsync(user, roles[0]).Wait();
                 }
             }
 
-
             if (userManager.FindByNameAsync("peter@uclm.es").Result == null) {
-                //A customer class has been defined because it has different attributes (purchase, rental, etc.)
                 ApplicationUser user = new ApplicationUser("3", "Peter", "Jackson", "peter@uclm.es","00000000B",25,"Hombre");
                 user.EmailConfirmed = true;
 
                 var result = userManager.CreateAsync(user, "OtherPass12$");
-
                 result.Wait();
 
                 if (result.IsCompletedSuccessfully) {
-                    //customer role
                     userManager.AddToRoleAsync(user, roles[2]).Wait();
-
                 }
             }
-
         }
 
+        // --- AÑADIDO: Método para insertar datos iniciales de Reserva ---
+        public static void SeedReservas(ApplicationDbContext dbContext) {
+            if (!dbContext.Reservas.Any()) {
+                var reservas = new List<Reserva>
+                {
+                    new Reserva
+                    {
+                        NombreCliente = "Elena",
+                        Apellidos = "Navarro Martínez",
+                        Dni = "12345678A",
+                        FechaReserva = DateTime.Now.AddDays(1),
+                        MetodoPago = MetodoPago.Bizum,
+                        PrecioTotal = 25.50
+                    },
+                    new Reserva
+                    {
+                        NombreCliente = "Peter",
+                        Apellidos = "Jackson",
+                        Dni = "87654321B",
+                        FechaReserva = DateTime.Now.AddDays(2),
+                        MetodoPago = MetodoPago.Tarjeta,
+                        PrecioTotal = 40.00
+                    }
+                };
 
-
-
-
+                dbContext.Reservas.AddRange(reservas);
+                dbContext.SaveChanges();
+            }
+        }
     }
 }
