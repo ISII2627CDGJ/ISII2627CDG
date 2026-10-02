@@ -32,4 +32,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<TipoMaterial> TiposMaterial { get; set; }
     
     public DbSet<CompeticionInscrita> CompeticionesInscritas { get; set; }
+
+
+    public DbSet<ClaseDeportiva> ClaseDeportiva { get; set; }
 }
