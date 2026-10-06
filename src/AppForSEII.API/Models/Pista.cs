@@ -29,7 +29,10 @@ public class Pista
     public List<PistaReservada> PistasReservadas { get; set; }  
 
     //constructores
-
+    public Pista()
+    {
+        
+    }
     public Pista(int idPista, string nombrePista, string nPersonas, double precio, int stock)
     {
         IdPista = idPista;
