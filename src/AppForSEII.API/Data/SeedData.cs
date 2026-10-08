@@ -226,7 +226,7 @@ namespace AppForSEII.API.Data
                 {
                     Nombre = "Fútbol",
                     NombreTipoDeporte = "Fútbol",
-                    Competiciones = "Liga local",
+                    Competiciones = new List<Competicion>(),
                     Descripcion = "Deporte de equipo"
                 };
 
