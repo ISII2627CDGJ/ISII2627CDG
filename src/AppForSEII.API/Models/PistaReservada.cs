@@ -1,11 +1,11 @@
 namespace AppForSEII.API.Models;
-
+[PrimaryKey(nameof(IdPista), nameof(IdReserva))]
 public class PistaReservada
 {
     [Key]
     public int Id { get; set; }
 
-    [Required]
+    [Required, StringLength(10, ErrorMessage = "La cantidad no puede tener más de 10 ")]
     public int Cantidad { get; set; }
 
 

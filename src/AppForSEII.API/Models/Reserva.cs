@@ -1,12 +1,5 @@
 namespace AppForSEII.API.Models;
 
-
-public enum MetodoPago
-{
-        Bizum,
-    Efectivo,
-    Tarjeta,
-}
 public class Reserva
 {
 
@@ -14,10 +7,11 @@ public class Reserva
     public int Id { get; set; }
 
     [Required]
-    [StringLength(100)]
+    [StringLength(100, ErrorMessage = "Los apellidos no pueden exceder los 100 caracteres.")]
     public string Apellidos { get; set; } = string.Empty;
 
     [Required]
+    [StringLength(9, ErrorMessage = "El DNI no puede exceder los 9 caracteres.")]
     public string Dni { get; set; } = string.Empty;
 
     [Required]
@@ -28,11 +22,11 @@ public class Reserva
     public MetodoPago MetodoPago { get; set; }
 
     [Required]
-    [StringLength(50)]
+    [StringLength(50,ErrorMessage="El nombre del cliente no puede exceder los 50 caracteres.")]
     public string NombreCliente { get; set; } = string.Empty;
 
     [Required]
-    [Range(0, 10000)]
+    [Range(0, 10000, ErrorMessage="El precio total debe estar entre 0 y 10000.")]
     public double PrecioTotal { get; set; }
     /*
     relacion 1..N siendo PistaReservada la 
