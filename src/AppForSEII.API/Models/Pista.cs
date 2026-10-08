@@ -7,17 +7,18 @@ public class Pista
     public int IdPista { get; set; }
 
     [Required]
-    [StringLength(100)]
-    public string NombrePista { get; set; } = string.Empty;
+    [StringLength(100, ErrorMessage = "El nombre de la pista no puede exceder los 100 caracteres.")]
+    public string NombrePista { get; set; }
 
     [Required]
-    public string NPersonas { get; set; } = string.Empty;
+    [Range(1, 100, ErrorMessage = "El número de personas debe estar entre 1 y 100.")]
+    public string NPersonas { get; set; }
 
      [Required]
-    [Range(0, 10000)]
+    [Range(0, 10000, ErrorMessage = "El precio debe estar entre 0 y 10000.")]
     public double Precio { get; set; }  
     [Required]
-    [Range(0, int.MaxValue)]
+    [Range(0, 100000,ErrorMessage = "El stock debe estar entre 0 y 100000.")]
     public int Stock { get; set; }
 
     //Relaciones
