@@ -2,6 +2,9 @@
 
 **[Instrucciones en castellano para instalar tu entorno](#instalación-de-vs-code-y-herramientas-relacionadas)**
 
+
+DASHBOARD: https://grafana.next.governify.io/d/agv-baaf10d6da896ecdbad9-v1/uclm-isii-2026-2027-isii2627cdg-v1?orgId=1&from=2026-09-20T22:00:00.000Z&to=2026-12-27T23:00:00.000Z&timezone=browser&var-showEvolutivePoints=true&refresh=30s
+
 # Instalación de VS Code y herramientas relacionadas
 
 ## Instalación VS Code
