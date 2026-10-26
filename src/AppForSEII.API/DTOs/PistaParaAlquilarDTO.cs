@@ -5,64 +5,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppForSEII.API.Models
+namespace AppForSEII.API.DTOs
 {
     public class PistaParaAlquilarDTO
     {
+        public int IdPista { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "El nombre de la pista no puede exceder los 100 caracteres.")]
+        public string NombrePista { get; set; } = string.Empty;
+
+        [Required]
+        public string NPersonas { get; set; } = string.Empty;
+
+        [Required]
+        [Range(0, 10000, ErrorMessage = "El precio debe estar entre 0 y 10000.")]
+        public double Precio { get; set; }
+
+        [Required]
+        [Range(0, 100000, ErrorMessage = "El stock debe estar entre 0 y 100000.")]
+        public int Stock { get; set; }
+
+        [Required]
+        public string NombreTipoDeporte { get; set; } = string.Empty;
+
+        // Constructores
         public PistaParaAlquilarDTO()
         {
         }
 
-      public PistaParaAlquilarDTO(int id, string NombrePista,double NPersonas,double Precio, DateTime availableFrom)
+        public PistaParaAlquilarDTO(int idPista, string nombrePista, string nPersonas, double precio, int stock, string nombreTipoDeporte)
         {
-            Id = id;
-            NombrePista = NombrePista;
-            NPersonas = NPersonas;
-            Precio = Precio;
-            AvailableFrom = availableFrom;
-            
-        }
-        public PistaParaAlquilarDTO(int id, string nombrePista, double nPersonas, double precio, DateTime? lastRental)
-            : this(id, nombrePista, nPersonas, precio, lastRental ?? DateTime.MinValue)
-        {
-            LastRental = lastRental;
+            IdPista = idPista;
+            NombrePista = nombrePista;
+            NPersonas = nPersonas;
+            Precio = precio;
+            Stock = stock;
+            NombreTipoDeporte = nombreTipoDeporte;
         }
 
-        public int Id { get; set; }
-
-        [StringLength(50, ErrorMessage = "Name must have a maximum length of 50 characters")]
-        public string NombrePista { get; set; } = string.Empty; // Added default value to avoid nullability issues
-
-        [Range(1, 100, ErrorMessage = "Number of people must be between 1 and 100")]
-        public double NPersonas { get; set; }
-
-        [Required]
-        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
-        [Range(1, float.MaxValue, ErrorMessage = "Minimum price is 1")]
-        [System.ComponentModel.DataAnnotations.Display(Name = "Price For Renting")]
-        public double Precio { get; set; }
-
-        [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        [System.ComponentModel.DataAnnotations.Display(Name = "Available From")]
-        public DateTime AvailableFrom { get; set; }
-
-        public DateTime? LastRental { get; set; }
-
+        // Equals & GetHashCode
         public override bool Equals(object? obj)
         {
             return obj is PistaParaAlquilarDTO dto &&
-                   Id == dto.Id &&
+                   IdPista == dto.IdPista &&
                    NombrePista == dto.NombrePista &&
                    NPersonas == dto.NPersonas &&
                    Precio == dto.Precio &&
-                   AvailableFrom == dto.AvailableFrom &&
-                   LastRental == dto.LastRental;
+                   Stock == dto.Stock &&
+                   NombreTipoDeporte == dto.NombreTipoDeporte;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, NombrePista, NPersonas, Precio, AvailableFrom, LastRental);
+            return HashCode.Combine(IdPista, NombrePista, NPersonas, Precio, Stock, NombreTipoDeporte);
         }
     }
 }
