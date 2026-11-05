@@ -2,6 +2,7 @@
 using System.Net;
 using AppForSEII.API.Data;
 using AppForSEII.API.Models;
+using AppForSEII.API.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +26,7 @@ namespace AppForSEII.API.Controllers
         // GET: Materiales/GetMaterialesParaAlquilar
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(IList<Material>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IList<MaterialParaAlquilarDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetMaterialesParaAlquilar(string? tipoMaterial, double? precioMaximo)
@@ -49,17 +50,27 @@ namespace AppForSEII.API.Controllers
             // Filtrar por tipo de material
             if (!string.IsNullOrEmpty(tipoMaterial))
             {
-                consulta = consulta.Where(m =>  m.TipoMaterial.NombreTipoMaterial == tipoMaterial);
+                consulta = consulta.Where(m =>
+                    m.TipoMaterial.NombreTipoMaterial == tipoMaterial);
             }
 
             // Filtrar por precio máximo
             if (precioMaximo.HasValue)
             {
-                consulta = consulta.Where(m =>   m.Precio <= precioMaximo.Value);
+                consulta = consulta.Where(m =>
+                    m.Precio <= precioMaximo.Value);
             }
 
-            // Ejecutar la consulta
-            var materiales = await consulta.ToListAsync();
+            // Ejecutar la consulta y convertir a DTO
+            var materiales = await consulta.Select(m => new MaterialParaAlquilarDTO
+            {
+                IdMaterial = m.IdMaterial,
+                Nombre = m.Nombre,
+                Cantidad = m.Cantidad,
+                Precio = m.Precio,
+                NombreTipoDeporte = m.TipoDeporte.NombreTipoDeporte,
+                NombreTipoMaterial = m.TipoMaterial.NombreTipoMaterial
+            }).ToListAsync();
 
             // Comprobar si existen materiales
             if (materiales.Count == 0)
