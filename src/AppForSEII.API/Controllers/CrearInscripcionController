@@ -1,0 +1,101 @@
+using System.Net;
+using AppForSEII.API.Data;
+using AppForSEII.API.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace AppForSEII.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class InscripcionesCompController : ControllerBase
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly ILogger<InscripcionesCompController> _logger;
+
+        public InscripcionesCompController(
+            ApplicationDbContext context,
+            ILogger<InscripcionesCompController> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
+
+        // POST: InscripcionesComp/CreateInscripcion
+        [HttpPost]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(InscripcionCompDetailDTO), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> CreateInscripcion(InscripcionCompForCreateDTO inscripcionForCreate)
+        {
+            // Las validaciones de DataAnnotations del DTO se comprueban antes de ejecutar el método
+            if (inscripcionForCreate.Competiciones.Count == 0)
+            {
+                ModelState.AddModelError("Competiciones", "Error! You must include at least one competition");
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
+
+            var ids = inscripcionForCreate.Competiciones.Select(c => c.CompeticionId).ToList();
+
+            // Solo se pueden elegir competiciones que existen y tienen plazas libres
+            var competiciones = await _context.Competiciones
+                .Include(c => c.TipoDeporte)
+                .Where(c => ids.Contains(c.Id) && c.Plazas > 0)
+                .ToListAsync();
+
+            InscripcionComp inscripcion = new InscripcionComp(DateTime.Now, 0m,
+                inscripcionForCreate.MetodoPago, inscripcionForCreate.NombreUsuario,
+                inscripcionForCreate.ApellidosUsuario, inscripcionForCreate.DNI,
+                inscripcionForCreate.Telefono);
+
+            var lineas = new List<CompeticionInscritaDTO>();
+
+            foreach (var item in inscripcionForCreate.Competiciones)
+            {
+                Competicion? competicion = competiciones.FirstOrDefault(c => c.Id == item.CompeticionId);
+
+                if (competicion == null)
+                {
+                    ModelState.AddModelError("Competiciones",
+                        $"Error! Competition with id '{item.CompeticionId}' is not available for inscription");
+                }
+                else
+                {
+                    inscripcion.CompeticionesInscritas.Add(
+                        new CompeticionInscrita(competicion.Id, inscripcion.Id, item.ProblemasFisicos));
+                    competicion.Plazas--;   // se descuenta una plaza (confirmar con el equipo)
+                    lineas.Add(new CompeticionInscritaDTO(competicion.Id, competicion.Nombre,
+                        competicion.TipoDeporte.NombreTipoDeporte, competicion.Fecha,
+                        competicion.Lugar, competicion.Precio, item.ProblemasFisicos));
+                }
+            }
+
+            // Si alguna competición no existe o no tiene plazas, no se guarda nada
+            if (ModelState.ErrorCount > 0)
+            {
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
+
+            inscripcion.PrecioTotal = lineas.Sum(l => l.Precio);
+
+            _context.Add(inscripcion);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Conflict("Error" + ex.Message);
+            }
+
+            var detalle = new InscripcionCompDetailDTO(inscripcion.Id, inscripcion.FechaInscripcion,
+                inscripcion.NombreUsuario, inscripcion.ApellidosUsuario, inscripcion.DNI,
+                inscripcion.Telefono, inscripcion.MetodoPago, lineas);
+
+            return CreatedAtAction("GetInscripcion", new { id = inscripcion.Id }, detalle);
+        }
+    }
+}
