@@ -3,7 +3,6 @@ using AppForSEII.API.Data;
 using AppForSEII.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AppForSEII.API.DTOs;
 
 namespace AppForSEII.API.Controllers
 {
@@ -25,20 +24,12 @@ namespace AppForSEII.API.Controllers
         // GET: InscripcionesComp/GetInscripcion
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(InscripcionCompDetailDTO), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(InscripcionComp), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetInscripcion(int id)
         {
             var inscripcion = await _context.InscripcionesComp
                 .Where(i => i.Id == id)
-                .Select(i => new InscripcionCompDetailDTO(i.Id, i.FechaInscripcion,
-                    i.NombreUsuario, i.ApellidosUsuario, i.DNI, i.Telefono, i.MetodoPago,
-                    i.CompeticionesInscritas
-                        .OrderBy(ci => ci.Competicion.Nombre)
-                        .Select(ci => new CompeticionInscritaDTO(ci.Competicion.Id,
-                            ci.Competicion.Nombre, ci.Competicion.TipoDeporte.NombreTipoDeporte,
-                            ci.Competicion.Fecha, ci.Competicion.Lugar, ci.Competicion.Precio,
-                            ci.ProblemasFisicos)).ToList()))
                 .FirstOrDefaultAsync();
 
             if (inscripcion == null)
