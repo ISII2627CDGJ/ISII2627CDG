@@ -1,0 +1,53 @@
+using System.Net;
+using AppForSEII.API.Data;
+using AppForSEII.API.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using AppForSEII.API.DTOs;
+
+namespace AppForSEII.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class InscripcionesCompController : ControllerBase
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly ILogger<InscripcionesCompController> _logger;
+
+        public InscripcionesCompController(
+            ApplicationDbContext context,
+            ILogger<InscripcionesCompController> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
+
+        // GET: InscripcionesComp/GetInscripcion
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(InscripcionCompDetailDTO), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetInscripcion(int id)
+        {
+            var inscripcion = await _context.InscripcionesComp
+                .Where(i => i.Id == id)
+                .Select(i => new InscripcionCompDetailDTO(i.Id, i.FechaInscripcion,
+                    i.NombreUsuario, i.ApellidosUsuario, i.DNI, i.Telefono, i.MetodoPago,
+                    i.CompeticionesInscritas
+                        .OrderBy(ci => ci.Competicion.Nombre)
+                        .Select(ci => new CompeticionInscritaDTO(ci.Competicion.Id,
+                            ci.Competicion.Nombre, ci.Competicion.TipoDeporte.NombreTipoDeporte,
+                            ci.Competicion.Fecha, ci.Competicion.Lugar, ci.Competicion.Precio,
+                            ci.ProblemasFisicos)).ToList()))
+                .FirstOrDefaultAsync();
+
+            if (inscripcion == null)
+            {
+                _logger.LogError($"Error: Inscripcion with id {id} does not exist");
+                return NotFound();
+            }
+
+            return Ok(inscripcion);
+        }
+    }
+}
