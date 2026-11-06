@@ -95,7 +95,8 @@ namespace AppForSEII.API.Controllers
             }
 
             // 2. Consulta y verificación de disponibilidad de stock para la fecha elegida
-            var pistaIds = reservaForCreate.Pistas.Select(p => p.IdPista).ToList();
+            // Cambia la línea donde obtienes pistaIds por:
+            var pistaIds = reservaForCreate.Pistas?.Select(p => p.IdPista).ToList() ?? new List<int>();
             var fecha = reservaForCreate.FechaReserva.Date;
             var fechaSiguiente = fecha.AddDays(1);
 
