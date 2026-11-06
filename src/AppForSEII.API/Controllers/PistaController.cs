@@ -1,62 +1,86 @@
-using System.Net;
-using AppForSEII.API.Data;
-using AppForSEII.API.DTOs;
-using AppForSEII.API.Models;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
+using Microsoft.Extensions.Logging;
+
+using AppForSEII.API.Data;
+
+using AppForSEII.API.DTOs.PistaDTOs;
+
+using AppForSEII.API.Models;
+
+using System.Linq;
+
+using System.Threading.Tasks;
+
+
 
 namespace AppForSEII.API.Controllers
+
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
     public class PistasController : ControllerBase
+
     {
+
         private readonly ApplicationDbContext _context;
+
         private readonly ILogger<PistasController> _logger;
 
+
+
         public PistasController(ApplicationDbContext context, ILogger<PistasController> logger)
+
         {
+
             _context = context;
+
             _logger = logger;
+
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        [ProducesResponseType(typeof(IList<PistaParaAlquilarDTO>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult> GetPistasParaAlquilar(string? tipoDeporte, DateTime? fecha)
+
+
+        [HttpGet("{id}")]
+
+        public async Task<ActionResult<PistaDetailDTO>> GetPista(int id)
+
         {
-            DateTime fechaFiltro = (fecha ?? DateTime.Today).Date;
 
-            if (fechaFiltro < DateTime.Today)
+            var pista = await _context.Pistas
+
+                .Include(p => p.TipoDeporte)
+
+                .FirstOrDefaultAsync(p => p.IdPista == id);
+
+
+
+            if (pista == null)
+
             {
-                ModelState.AddModelError("Fecha", "¡Error! La fecha de consulta no puede ser anterior a la fecha actual.");
-                return BadRequest(new ValidationProblemDetails(ModelState));
-            }
 
-            var pistas = await _context.Pistas
-                .Where(p => tipoDeporte == null || p.TipoDeporte.Nombre == tipoDeporte)
-                .OrderBy(p => p.NombrePista)
-                .Select(p => new PistaParaAlquilarDTO
-                {
-                    IdPista = p.IdPista,
-                    NombrePista = p.NombrePista,
-                    NPersonas = p.NPersonas,
-                    Precio = p.Precio,
-                    Stock = p.Stock - p.PistasReservadas
-                        .Where(pr => pr.Reserva != null && pr.Reserva.FechaReserva.Date == fechaFiltro)
-                        .Sum(pr => (int?)pr.Cantidad) ?? 0,
-                    NombreTipoDeporte = p.TipoDeporte.Nombre
-                })
-                .ToListAsync();
-
-            if (pistas == null || pistas.Count == 0)
-            {
                 return NotFound();
+
             }
 
-            return Ok(pistas);
+
+
+            var dto = new PistaDetailDTO(
+                pista.IdPista,
+                pista.NombrePista,
+                pista.TipoDeporte.Nombre,
+                0.0, 
+                0,   
+                null,
+                null  
+            );
+
+
+
+            return Ok(dto);
+
         }
+
     }
+
 }
