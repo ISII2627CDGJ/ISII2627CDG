@@ -70,15 +70,15 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         public override bool Equals(object? obj)
         {
             return obj is ReservaForCreateDTO dTO &&
-                   NombreUsuario == dTO.NombreUsuario &&
-                   ApellidosUsuario == dTO.ApellidosUsuario &&
-                   Dni == dTO.Dni &&
-                   Email == dTO.Email &&
-                   Telefono == dTO.Telefono &&
-                   MetodoPago == dTO.MetodoPago &&
-                   EqualityComparer<List<ReservaItemDTO>>.Default.Equals(Pistas, dTO.Pistas) &&
-                   DatosPago == dTO.DatosPago &&
-                   FechaReserva == dTO.FechaReserva;
+                NombreUsuario == dTO.NombreUsuario &&
+                ApellidosUsuario == dTO.ApellidosUsuario &&
+                Dni == dTO.Dni &&
+                Email == dTO.Email &&
+                Telefono == dTO.Telefono &&
+                MetodoPago == dTO.MetodoPago &&
+                Pistas.SequenceEqual(dTO.Pistas) &&
+                DatosPago == dTO.DatosPago &&
+                FechaReserva == dTO.FechaReserva;
         }
 
         public override int GetHashCode()
