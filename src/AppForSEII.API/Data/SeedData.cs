@@ -220,18 +220,38 @@ namespace AppForSEII.API.Data
         {
             // TipoDeporte
 
-            if (!dbContext.TipoDeporte.Any())
+            if (!dbContext.TipoDeporte.Any())  {
+                var tipos = new List<TipoDeporte>
             {
-                TipoDeporte futbol = new TipoDeporte
-                {
-                    Nombre = "Fútbol",
-                    NombreTipoDeporte = "Fútbol",
-                    Competiciones = new List<Competicion>(),
-                    Descripcion = "Deporte de equipo"
-                };
-
-                dbContext.TipoDeporte.Add(futbol);
+              new TipoDeporte
+            {
+                Nombre = "Fútbol",
+                NombreTipoDeporte = "Fútbol",
+                Descripcion = "Deporte de equipo",
+                Competiciones = new List<Competicion>(),
+                Pistas = new List<Pista>()
+            },
+            new TipoDeporte
+            {
+                Nombre = "Tenis",
+                NombreTipoDeporte = "Tenis",
+                Descripcion = "Deporte de raqueta",
+                Competiciones = new List<Competicion>(),
+                Pistas = new List<Pista>()
+            },
+            new TipoDeporte
+            {
+                Nombre = "Pádel",
+                NombreTipoDeporte = "Pádel",
+                Descripcion = "Deporte de pala en pareja",
+                Competiciones = new List<Competicion>(),
+                Pistas = new List<Pista>()
             }
+             };
+
+             dbContext.AddRange(tipos);
+             dbContext.SaveChanges();
+          }
 
 
             // TipoMaterial

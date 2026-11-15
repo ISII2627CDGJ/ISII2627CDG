@@ -1,5 +1,6 @@
 using System.Net;
 using AppForSEII.API.Data;
+using AppForSEII.API.DTOs;
 using AppForSEII.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,33 +25,38 @@ namespace AppForSEII.API.Controllers
         // GET: Competiciones/GetCompeticionesParaInscripcion
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(IList<Competicion>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IList<CompeticionParaInscripcionDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetCompeticionesParaInscripcion(string? lugar, string? tipoDeporte)
         {
-            // Solo competiciones con plazas libres
             var consulta = _context.Competiciones
+                .Include(c => c.TipoDeporte)
                 .Where(c => c.Plazas > 0);
 
-            // Filtrar por lugar
             if (!string.IsNullOrEmpty(lugar))
             {
                 consulta = consulta.Where(c => c.Lugar.Contains(lugar));
             }
 
-            // Filtrar por tipo de deporte
             if (!string.IsNullOrEmpty(tipoDeporte))
             {
                 consulta = consulta.Where(c =>
-                    c.TipoDeporte.NombreTipoDeporte == tipoDeporte);
+                    c.TipoDeporte.NombreTipoDeporte == tipoDeporte ||
+                    c.TipoDeporte.Nombre == tipoDeporte);
             }
 
-            // Ejecutar la consulta
             var competiciones = await consulta
                 .OrderBy(c => c.Nombre)
+                .Select(c => new CompeticionParaInscripcionDTO(
+                    c.Id,
+                    c.Nombre,
+                    c.TipoDeporte.Nombre,
+                    c.Fecha,
+                    c.Lugar,
+                    c.Precio
+                ))
                 .ToListAsync();
 
-            // Comprobar si existen competiciones
             if (competiciones.Count == 0)
             {
                 return NotFound();

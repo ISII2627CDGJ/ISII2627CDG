@@ -13,14 +13,14 @@ public class TipoDeporte
 
     [Required]
      [StringLength(50, ErrorMessage = "El nombre no puede tener más de 50 caracteres.")]
-    public string Nombre { get; set; }
+    public string Nombre { get; set; }=string.Empty;
 
     [Required]
      [StringLength(50, ErrorMessage = "El nombre del tipo de deporte no puede tener más de 50 caracteres.")]
-    public string NombreTipoDeporte { get; set; }
+    public string NombreTipoDeporte { get; set; }=string.Empty;
 
     [Required]
-    public string Descripcion { get; set; }
+    public string Descripcion { get; set; }=string.Empty;
 
     // Relación 1-N con Material
     public List<Material> Materiales { get; set; }
@@ -34,14 +34,15 @@ public class TipoDeporte
     // Constructores
     
     public TipoDeporte() { }
+    
 
     public TipoDeporte(int id, string nombre, string nombreTipoDeporte, string competiciones, string descripcion)
-{
-    Id = id;
-    Nombre = nombre;
-    NombreTipoDeporte = nombreTipoDeporte;
-    Descripcion = descripcion;
-}
+    {
+        Id = id;
+        Nombre = nombre;
+        NombreTipoDeporte = nombreTipoDeporte;
+        Descripcion = descripcion;
+    }
 
     //metodo equals
     

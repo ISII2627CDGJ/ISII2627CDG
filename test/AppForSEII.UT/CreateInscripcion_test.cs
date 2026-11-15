@@ -1,4 +1,5 @@
 using AppForSEII.API.Controllers;
+using AppForSEII.API.DTOs;
 using AppForSEII.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -36,7 +37,7 @@ namespace AppForSEII.UT
 
             // Assert
             var ok = Assert.IsType<OkObjectResult>(result);
-            var actual = Assert.IsType<InscripcionComp>(ok.Value);
+            var actual = Assert.IsType<InscripcionCompDetailDTO>(ok.Value);
             Assert.Equal(1, actual.Id);
         }
 

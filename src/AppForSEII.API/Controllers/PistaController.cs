@@ -65,20 +65,17 @@ namespace AppForSEII.API.Controllers
 
 
 
-            var dto = new PistaDetailDTO(
-                pista.IdPista,
+            var pistaDTO = new PistaDetailDTO(
+                 pista.IdPista,
                 pista.NombrePista,
-                pista.TipoDeporte.Nombre,
-                0.0, 
-                0,   
-                null,
-                null  
-            );
+                 pista.NPersonas,
+                 pista.Precio,
+                 pista.Stock,
+                 pista.TipoDeporte?.Id,
+                  pista.TipoDeporte?.Nombre
+            )               ;
 
-
-
-            return Ok(dto);
-
+            return Ok(pistaDTO);
         }
 
     }

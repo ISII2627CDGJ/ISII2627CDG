@@ -39,8 +39,8 @@ namespace AppForSEII.UT.PistaController_test
         {
             var pistaDetailDTOs = new List<PistaDetailDTO>()
             {
-                new PistaDetailDTO(1, "Pista Futbol", "20", 40.0, 1, 1, "Fútbol"),
-                new PistaDetailDTO(2, "Pista Tenis 1", "4", 15.0, 1, 2, "Tenis"),
+                new PistaDetailDTO(1, "Pista Futbol", "20", 30.0, 1, 1, "Fútbol"),
+                new PistaDetailDTO(2, "Pista Tenis 1", "4", 10.0, 1, 2, "Tenis"),
                 new PistaDetailDTO(3, "Pista Pádel 1", "4", 20.0, 1, 3, "Pádel")
             };
 
