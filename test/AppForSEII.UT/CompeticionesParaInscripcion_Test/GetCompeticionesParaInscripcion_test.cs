@@ -13,7 +13,6 @@ namespace AppForSEII.UT
 
         public GetCompeticionesParaInscripcion_test()
         {
-            // TODO: ajustar los constructores a los de tu proyecto
             var futbol = new TipoDeporte(1,"Fútbol", "Fútbol", "Deporte de equipo","11vs11");
             var tenis = new TipoDeporte(2,"Tenis", "Tenis", "Deporte de raqueta","1vs1");
             _context.TipoDeporte.AddRange(futbol, tenis);

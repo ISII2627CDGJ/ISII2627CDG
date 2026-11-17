@@ -29,9 +29,8 @@ namespace AppForSEII.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetCompeticionesParaInscripcion(string? lugar, string? tipoDeporte)
         {
-            var consulta = _context.Competiciones
-                .Include(c => c.TipoDeporte)
-                .Where(c => c.Plazas > 0);
+                var consulta = _context.Competiciones
+                    .Where(c => c.Plazas > 0);
 
             if (!string.IsNullOrEmpty(lugar))
             {
@@ -40,9 +39,7 @@ namespace AppForSEII.API.Controllers
 
             if (!string.IsNullOrEmpty(tipoDeporte))
             {
-                consulta = consulta.Where(c =>
-                    c.TipoDeporte.NombreTipoDeporte == tipoDeporte ||
-                    c.TipoDeporte.Nombre == tipoDeporte);
+                consulta = consulta.Where(c => c.TipoDeporte.Nombre == tipoDeporte);
             }
 
             var competiciones = await consulta
