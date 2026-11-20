@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using AppForSEII.API.Models;
 
 namespace AppForSEII.API.DTOs.ReservaDetailDTOs
 {
     public class ReservaForCreateDTO
     {
-        public ReservaForCreateDTO(string nombreUsuario)
+        public ReservaForCreateDTO()
         {
             NombreUsuario = string.Empty;
             ApellidosUsuario = string.Empty;
@@ -16,6 +17,10 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
             Telefono = string.Empty;
             Pistas = new List<ReservaItemDTO>();
             DatosPago = string.Empty;
+        }
+
+        public ReservaForCreateDTO(string nombreUsuario) : this()
+        {
             NombreUsuario = nombreUsuario;
         }
 
@@ -70,15 +75,15 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         public override bool Equals(object? obj)
         {
             return obj is ReservaForCreateDTO dTO &&
-                NombreUsuario == dTO.NombreUsuario &&
-                ApellidosUsuario == dTO.ApellidosUsuario &&
-                Dni == dTO.Dni &&
-                Email == dTO.Email &&
-                Telefono == dTO.Telefono &&
-                MetodoPago == dTO.MetodoPago &&
-                Pistas.SequenceEqual(dTO.Pistas) &&
-                DatosPago == dTO.DatosPago &&
-                FechaReserva == dTO.FechaReserva;
+                   NombreUsuario == dTO.NombreUsuario &&
+                   ApellidosUsuario == dTO.ApellidosUsuario &&
+                   Dni == dTO.Dni &&
+                   Email == dTO.Email &&
+                   Telefono == dTO.Telefono &&
+                   MetodoPago == dTO.MetodoPago &&
+                   Pistas.SequenceEqual(dTO.Pistas) &&
+                   DatosPago == dTO.DatosPago &&
+                   FechaReserva == dTO.FechaReserva;
         }
 
         public override int GetHashCode()

@@ -32,17 +32,18 @@ namespace AppForSEII.API.Controllers
             }
 
             var reserva = await _context.Reservas
-                .Where(r => r.Id == id)
+                .Where(r => r.IdReserva == id)
+                .Include(r => r.Cliente)
                 .Include(r => r.PistasReservadas)
                     .ThenInclude(pr => pr.Pista)
                         .ThenInclude(p => p!.TipoDeporte)
                 .Select(r => new ReservaDetailDTO(
-                    r.Id,
-                    r.NombreCliente,
-                    r.Apellidos,
-                    r.Dni,
-                    "", // Email (según disponibilidad en tu DTO)
-                    "", // Teléfono (según disponibilidad en tu DTO)
+                    r.IdReserva,
+                    r.Cliente.Name ?? string.Empty,
+                    r.Cliente.Surname ?? string.Empty,
+                    r.Cliente.DNI ?? string.Empty,
+                    r.Cliente.Email ?? string.Empty,
+                    r.Cliente.PhoneNumber ?? string.Empty,
                     r.MetodoPago,
                     r.PrecioTotal,
                     r.PistasReservadas
@@ -54,7 +55,7 @@ namespace AppForSEII.API.Controllers
                             (double)pr.Precio,
                             pr.Observaciones))
                         .ToList<ReservaItemDTO>(),
-                    "",
+                    string.Empty,
                     r.FechaReserva))
                 .FirstOrDefaultAsync();
 
@@ -89,14 +90,22 @@ namespace AppForSEII.API.Controllers
                 ModelState.AddModelError("Pistas", "¡Error! Hay pistas repetidas en la solicitud de reserva.");
             }
 
+            // 2. Comprobar que el usuario (ApplicationUser) existe en el sistema
+            var cliente = await _context.ApplicationUsers
+                .FirstOrDefaultAsync(u => u.UserName == reservaForCreate.Email || u.Email == reservaForCreate.Email);
+
+            if (cliente == null)
+            {
+                ModelState.AddModelError("Email", $"¡Error! El usuario con email '{reservaForCreate.Email}' no está registrado.");
+            }
+
             if (ModelState.ErrorCount > 0)
             {
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            // 2. Consulta y verificación de disponibilidad de stock para la fecha elegida
-            // Cambia la línea donde obtienes pistaIds por:
-            var pistaIds = reservaForCreate.Pistas?.Select(p => p.IdPista).ToList() ?? new List<int>();
+            // 3. Consulta y verificación de disponibilidad de stock para la fecha elegida
+            var pistaIds = reservaForCreate.Pistas!.Select(p => p.IdPista).ToList();
             var fecha = reservaForCreate.FechaReserva.Date;
             var fechaSiguiente = fecha.AddDays(1);
 
@@ -106,7 +115,7 @@ namespace AppForSEII.API.Controllers
                 {
                     p.IdPista,
                     p.NombrePista,
-                    NombreTipoDeporte = p.TipoDeporte != null ? p.TipoDeporte.Nombre : "",
+                    NombreTipoDeporte = p.TipoDeporte != null ? p.TipoDeporte.Nombre : string.Empty,
                     p.NPersonas,
                     p.Precio,
                     p.Stock,
@@ -118,19 +127,17 @@ namespace AppForSEII.API.Controllers
                 })
                 .ToListAsync();
 
-            // 3. Creación de la Entidad Reserva alineada al modelo exacto
+            // 4. Creación de la Entidad Reserva vinculada a ApplicationUser
             Reserva reserva = new Reserva
             {
-                NombreCliente = reservaForCreate.NombreUsuario,
-                Apellidos = reservaForCreate.ApellidosUsuario,
-                Dni = reservaForCreate.Dni,
+                Cliente = cliente!,
                 FechaReserva = reservaForCreate.FechaReserva,
                 MetodoPago = reservaForCreate.MetodoPago,
                 PrecioTotal = 0,
                 PistasReservadas = new List<PistaReservada>()
             };
 
-            foreach (var item in reservaForCreate.Pistas)
+            foreach (var item in reservaForCreate.Pistas!)
             {
                 var pista = pistas.FirstOrDefault(p => p.IdPista == item.IdPista);
 
@@ -149,7 +156,7 @@ namespace AppForSEII.API.Controllers
                         IdPista = pista.IdPista,
                         Cantidad = 1,
                         Precio = (decimal)pista.Precio,
-                        Observaciones = item.Observaciones
+                        Observaciones = item.Observaciones ?? string.Empty
                     });
 
                     // Rellenar datos en los items DTO para la respuesta final
@@ -168,7 +175,7 @@ namespace AppForSEII.API.Controllers
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            // 4. Guardar en la Base de Datos
+            // 5. Guardar en la Base de Datos
             _context.Reservas.Add(reserva);
 
             try
@@ -181,22 +188,22 @@ namespace AppForSEII.API.Controllers
                 return Conflict("Error: " + ex.Message);
             }
 
-            // 5. Generar DTO detallado de respuesta
+            // 6. Generar DTO detallado de respuesta con los datos reales de ApplicationUser
             var reservaDetail = new ReservaDetailDTO(
-                reserva.Id,
-                reservaForCreate.NombreUsuario,
-                reservaForCreate.ApellidosUsuario,
-                reservaForCreate.Dni,
-                reservaForCreate.Email,
-                reservaForCreate.Telefono,
+                reserva.IdReserva,
+                cliente!.Name ?? string.Empty,
+                cliente.Surname ?? string.Empty,
+                cliente.DNI ?? string.Empty,
+                cliente.Email ?? string.Empty,
+                cliente.PhoneNumber ?? string.Empty,
                 reserva.MetodoPago,
                 reserva.PrecioTotal,
-                reservaForCreate.Pistas,
+                reservaForCreate.Pistas!,
                 reservaForCreate.DatosPago,
                 reserva.FechaReserva
             );
 
-            return CreatedAtAction(nameof(GetReserva), new { id = reserva.Id }, reservaDetail);
+            return CreatedAtAction(nameof(GetReserva), new { id = reserva.IdReserva }, reservaDetail);
         }
     }
 }

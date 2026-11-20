@@ -1,5 +1,4 @@
 using AppForSEII.API.Controllers;
-using AppForSEII.API.Data;
 using AppForSEII.API.DTOs.ReservaDetailDTOs;
 using AppForSEII.API.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +27,19 @@ namespace AppForSEII.UT.ReservaController_test
 
         public CreateReserva_test()
         {
+            var usuario = new ApplicationUser(
+                "1",
+                _nombreUsuario,
+                _apellidosUsuario,
+                _email,
+                _dni,
+                25,
+                "Mujer"
+            )
+            {
+                PhoneNumber = _telefono
+            };
+
             var tiposDeporte = new List<TipoDeporte>()
             {
                 new TipoDeporte { Id = 1, Nombre = _pista1TipoDeporte },
@@ -42,12 +54,10 @@ namespace AppForSEII.UT.ReservaController_test
 
             var reserva = new Reserva(
                 1,
-                _apellidosUsuario,
-                _dni,
                 _fechaReserva,
                 MetodoPago.Tarjeta,
-                _nombreUsuario,
                 12.0,
+                usuario,
                 new List<PistaReservada>()
             );
 
@@ -62,19 +72,20 @@ namespace AppForSEII.UT.ReservaController_test
                 Observaciones = "Sin observaciones"
             });
 
+            _context.Add(usuario);
             _context.AddRange(tiposDeporte);
             _context.AddRange(pistas);
             _context.Add(reserva);
             _context.SaveChanges();
         }
 
-        private static ReservaForCreateDTO CrearReservaDTO(List<ReservaItemDTO> pistas, DateTime fechaReserva, string nombre = _nombreUsuario)
+        private static ReservaForCreateDTO CrearReservaDTO(List<ReservaItemDTO> pistas, DateTime fechaReserva, string email = _email)
         {
             return new ReservaForCreateDTO(
-                nombre,
+                _nombreUsuario,
                 _apellidosUsuario,
                 _dni,
-                _email,
+                email,
                 _telefono,
                 MetodoPago.Tarjeta,
                 pistas,
@@ -88,24 +99,24 @@ namespace AppForSEII.UT.ReservaController_test
             return new ReservaItemDTO(idPista, "", "", "4", 0.0, observaciones);
         }
 
-       public static IEnumerable<object[]> TestCasesFor_CreateReserva()
+        public static IEnumerable<object[]> TestCasesFor_CreateReserva()
         {
             var reservaSinPistas = CrearReservaDTO(new List<ReservaItemDTO>(), _fechaReserva);
             var reservaFechaPasada = CrearReservaDTO(new List<ReservaItemDTO>() { CrearItem(1) }, DateTime.Today.AddDays(-1));
             var reservaPistaRepetida = CrearReservaDTO(new List<ReservaItemDTO>() { CrearItem(1), CrearItem(1) }, _fechaReserva);
+            var reservaUsuarioNoExiste = CrearReservaDTO(new List<ReservaItemDTO>() { CrearItem(1) }, _fechaReserva, "noexiste@uclm.es");
             var reservaPistaNoExiste = CrearReservaDTO(new List<ReservaItemDTO>() { CrearItem(99) }, _fechaReserva);
             var reservaPistaSinStock = CrearReservaDTO(new List<ReservaItemDTO>() { CrearItem(2) }, _fechaReserva);
 
-            var allTests = new List<object[]>
+            return new List<object[]>
             {
                 new object[] { reservaSinPistas, "¡Error!" },
                 new object[] { reservaFechaPasada, "¡Error! La fecha de su reserva no puede" },
                 new object[] { reservaPistaRepetida, "¡Error! Hay pistas repetidas en la solici" },
+                new object[] { reservaUsuarioNoExiste, "¡Error! El usuario con email 'noexiste@uclm.es'" },
                 new object[] { reservaPistaNoExiste, "¡Error! La pista con ID '99' no existe." },
                 new object[] { reservaPistaSinStock, "¡Error! La pista 'Pista de pádel 1' no es" }
             };
-
-            return allTests;
         }
 
         [Theory]
@@ -127,9 +138,9 @@ namespace AppForSEII.UT.ReservaController_test
             Assert.StartsWith(errorExpected, errorActual);
         }
 
-    [Fact]
-    [Trait("LevelTesting", "Unit Testing")]
-    [Trait("Database", "WithoutFixture")]
+        [Fact]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
         public async Task CreateReserva_Success_test()
         {
             var mock = new Mock<ILogger<ReservaController>>();
@@ -141,8 +152,6 @@ namespace AppForSEII.UT.ReservaController_test
                 _fechaReserva
             );
 
-            // Asegúrate de que NPersonas ("4") y Precio (10.0) sean los mismos
-            // que pusiste al crear la Pista con IdPista = 1 en el constructor de CreateReserva_test
             var pista1 = _context.Pistas.Find(1)!;
 
             var expectedReservaDetailDTO = new ReservaDetailDTO(

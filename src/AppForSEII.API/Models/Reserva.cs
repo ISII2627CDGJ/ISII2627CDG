@@ -1,73 +1,60 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace AppForSEII.API.Models;
 
 public class Reserva
 {
-
     [Key]
-    public int Id { get; set; }
+    public int IdReserva { get; set; }
 
     [Required]
-    [StringLength(100, ErrorMessage = "Los apellidos no pueden exceder los 100 caracteres.")]
-    public string Apellidos { get; set; } = string.Empty;
-
-    [Required]
-    [StringLength(9, ErrorMessage = "El DNI no puede exceder los 9 caracteres.")]
-    public string Dni { get; set; } = string.Empty;
-
-    [Required]
-
     public DateTime FechaReserva { get; set; } = DateTime.Now;
 
     [Required]
     public MetodoPago MetodoPago { get; set; }
 
     [Required]
-    [StringLength(50,ErrorMessage="El nombre del cliente no puede exceder los 50 caracteres.")]
-    public string NombreCliente { get; set; } = string.Empty;
+    [Range(0, 10000, ErrorMessage = "El precio total debe estar entre 0 y 10000.")]
+    public double PrecioTotal { get; set; }
+
+    // Relaciones
+    public List<PistaReservada> PistasReservadas { get; set; } = new List<PistaReservada>();
 
     [Required]
-    [Range(0, 10000, ErrorMessage="El precio total debe estar entre 0 y 10000.")]
-    public double PrecioTotal { get; set; }
-    /*
-    relacion 1..N siendo PistaReservada la 
-    clase dependiente y la clase Pista principal    
-    */
-    public List<PistaReservada> PistasReservadas { get; set; }
+    public ApplicationUser Cliente { get; set; } = null!;
 
-
-    //Constructores
-
+    // Constructores
     public Reserva()
     {
         PistasReservadas = new List<PistaReservada>();
     }
 
-    public Reserva(int id, string apellidos, string dni, DateTime fechaReserva, MetodoPago metodoPago, string nombreCliente, double precioTotal, List<PistaReservada> pistasReservadas)
+    public Reserva(int idReserva, DateTime fechaReserva, MetodoPago metodoPago, double precioTotal, ApplicationUser cliente, List<PistaReservada> pistasReservadas)
     {
-        Id = id;
-        Apellidos = apellidos;
-        Dni = dni;
+        IdReserva = idReserva;
         FechaReserva = fechaReserva;
         MetodoPago = metodoPago;
-        NombreCliente = nombreCliente;
         PrecioTotal = precioTotal;
+        Cliente = cliente;
         PistasReservadas = pistasReservadas ?? new List<PistaReservada>();
     }
 
-//Metodo equals
     public override bool Equals(object? obj)
     {
         if (obj is Reserva other)
         {
-            return Id == other.Id &&
-                   Apellidos == other.Apellidos &&
-                   Dni == other.Dni &&
+            return IdReserva == other.IdReserva &&
                    FechaReserva == other.FechaReserva &&
                    MetodoPago == other.MetodoPago &&
-                   NombreCliente == other.NombreCliente &&
                    PrecioTotal == other.PrecioTotal &&
+                   EqualityComparer<ApplicationUser>.Default.Equals(Cliente, other.Cliente) &&
                    PistasReservadas.SequenceEqual(other.PistasReservadas);
         }
         return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(IdReserva, FechaReserva, MetodoPago, PrecioTotal, Cliente);
     }
 }

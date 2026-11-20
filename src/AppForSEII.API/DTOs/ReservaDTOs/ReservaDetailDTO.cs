@@ -35,7 +35,7 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         {
             return obj is ReservaDetailDTO dTO &&
                    base.Equals(obj) &&
-                   Id == dTO.Id &&
+                   Id.Equals(dTO.Id) &&
                    PrecioTotal == dTO.PrecioTotal;
         }
 
