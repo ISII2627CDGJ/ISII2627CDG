@@ -1,6 +1,6 @@
 namespace AppForSEII.API.DTOs
 {
-    public class CompeticionParaInscripcionDTO
+    public class GetInscripcionCompDTO
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
@@ -9,11 +9,11 @@ namespace AppForSEII.API.DTOs
         public string Lugar { get; set; } = string.Empty;
         public decimal Precio { get; set; }
 
-        public CompeticionParaInscripcionDTO()
+        public GetInscripcionCompDTO()
         {
         }
 
-        public CompeticionParaInscripcionDTO(int id, string nombre, string nombreTipoDeporte,
+        public GetInscripcionCompDTO(int id, string nombre, string nombreTipoDeporte,
             DateTime fecha, string lugar, decimal precio)
         {
             Id = id;
@@ -26,7 +26,7 @@ namespace AppForSEII.API.DTOs
 
         public override bool Equals(object? obj)
         {
-            return obj is CompeticionParaInscripcionDTO dto &&
+            return obj is GetInscripcionCompDTO dto &&
                    Id == dto.Id &&
                    Nombre == dto.Nombre &&
                    NombreTipoDeporte == dto.NombreTipoDeporte &&

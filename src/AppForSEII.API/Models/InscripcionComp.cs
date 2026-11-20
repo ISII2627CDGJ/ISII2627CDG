@@ -23,11 +23,14 @@ public class InscripcionComp
     [Required]
     [StringLength(9)]
     public string DNI { get; set; }
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; }
 
     [Required]
     [Phone]
     public string Telefono { get; set; }
-    public InscripcionComp(DateTime fechaInscripcion, decimal precioTotal, string metodoPago, string nombreUsuario, string apellidosUsuario, string dni, string telefono)
+    public InscripcionComp(DateTime fechaInscripcion, decimal precioTotal, string metodoPago, string nombreUsuario, string apellidosUsuario, string dni, string email, string telefono)
     {
         FechaInscripcion = fechaInscripcion;
         PrecioTotal = precioTotal;
@@ -35,6 +38,7 @@ public class InscripcionComp
         NombreUsuario = nombreUsuario;
         ApellidosUsuario = apellidosUsuario;
         DNI = dni;
+        Email = email;
         Telefono = telefono;
     }
     public IList<CompeticionInscrita> CompeticionesInscritas { get; set; } = new List<CompeticionInscrita>();
@@ -52,6 +56,7 @@ public class InscripcionComp
                    NombreUsuario == other.NombreUsuario &&
                    ApellidosUsuario == other.ApellidosUsuario &&
                    DNI == other.DNI &&
+                   Email == other.Email &&
                    Telefono == other.Telefono;
         }
         return false;

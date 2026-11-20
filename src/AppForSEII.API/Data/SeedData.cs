@@ -406,6 +406,7 @@ namespace AppForSEII.API.Data
                     ApellidosUsuario = "Navarro Martínez",
 
                     DNI = "12345678A",
+                    Email = "elena@gmail.com",
                     Telefono = "600000000"
                 };
 

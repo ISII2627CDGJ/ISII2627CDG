@@ -34,10 +34,9 @@ namespace AppForSEII.UT
                 new CompeticionInscritaDTO(1, "Torneo de fútbol", "Fútbol", Fecha, "Albacete", 10m, "Ninguno"),
                 new CompeticionInscritaDTO(3, "Copa de fútbol", "Fútbol", Fecha, "Madrid", 20m, null)
             };
-            var peticion = new InscripcionCompForCreateDTO("Elena", "Navarro Martínez", "12345678A",
-                "600000000", "Bizum", competicionesPedidas);
+            var peticion = new POSTInscripcionCompDTO("Elena", "Navarro Martínez", "12345678A", "elena@gmail.com", "600000000", "Bizum", "600000000", competicionesPedidas);
             var esperado = new InscripcionCompDetailDTO(1, DateTime.Now, "Elena", "Navarro Martínez",
-                "12345678A", "600000000", "Bizum", competicionesPedidas);
+                "12345678A", "elena@gmail.com", "600000000", competicionesPedidas);
 
             // Act
             var result = await controller.CreateInscripcion(peticion);
@@ -47,6 +46,10 @@ namespace AppForSEII.UT
             var actual = Assert.IsType<InscripcionCompDetailDTO>(created.Value);
             Assert.Equal(esperado, actual);
             Assert.Equal(19, _context.Competiciones.Find(1)!.Plazas);
+            
+            Assert.Equal(1, _context.InscripcionesComp.Count());
+            Assert.Equal(2, _context.CompeticionesInscritas.Count());
+            Assert.Equal(14, _context.Competiciones.Find(3)!.Plazas);
         }
 
         public static IEnumerable<object?[]> CasosBadRequest()
@@ -77,8 +80,7 @@ namespace AppForSEII.UT
         {
             // Arrange
             var controller = new InscripcionesCompController(_context, NullLogger<InscripcionesCompController>.Instance);
-            var peticion = new InscripcionCompForCreateDTO("Elena", "Navarro Martínez", "12345678A",
-                "600000000", "Bizum", competiciones);
+            var peticion = new POSTInscripcionCompDTO("Elena", "Navarro Martínez", "12345678A", "elena@mail.com", "600000000", "Bizum", "600000000", competiciones);
 
             // Act
             var result = await controller.CreateInscripcion(peticion);
@@ -87,4 +89,5 @@ namespace AppForSEII.UT
             Assert.IsType<BadRequestObjectResult>(result);
         }
     }
+    
 }
