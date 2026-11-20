@@ -27,21 +27,21 @@ namespace AppForSEII.UT
 
         public static IEnumerable<object?[]> CasosOk()
         {
-            var torneo = new CompeticionParaInscripcionDTO(1, "Torneo de fútbol", "Fútbol", Fecha, "Albacete", 10m);
-            var liga = new CompeticionParaInscripcionDTO(2, "Liga de tenis", "Tenis", Fecha, "Madrid", 20m);
+            var torneo = new GetInscripcionCompDTO(1, "Torneo de fútbol", "Fútbol", Fecha, "Albacete", 10m);
+            var liga = new GetInscripcionCompDTO(2, "Liga de tenis", "Tenis", Fecha, "Madrid", 20m);
 
             // Sin filtros: todas las que tienen plazas, ordenadas por nombre
-            yield return new object?[] { null, null, new List<CompeticionParaInscripcionDTO> { liga, torneo } };
+            yield return new object?[] { null, null, new List<GetInscripcionCompDTO> { liga, torneo } };
             // Por lugar
-            yield return new object?[] { "Albacete", null, new List<CompeticionParaInscripcionDTO> { torneo } };
+            yield return new object?[] { "Albacete", null, new List<GetInscripcionCompDTO> { torneo } };
             // Por tipo de deporte
-            yield return new object?[] { null, "Tenis", new List<CompeticionParaInscripcionDTO> { liga } };
+            yield return new object?[] { null, "Tenis", new List<GetInscripcionCompDTO> { liga } };
         }
 
         [Theory]
         [MemberData(nameof(CasosOk))]
         public async Task GetCompeticionesParaInscripcion_OK_test(
-            string? lugar, string? tipoDeporte, List<CompeticionParaInscripcionDTO> esperadas)
+            string? lugar, string? tipoDeporte, List<GetInscripcionCompDTO> esperadas)
         {
             // Arrange
             var controller = new CompeticionesController(_context, NullLogger<CompeticionesController>.Instance);
@@ -51,7 +51,7 @@ namespace AppForSEII.UT
 
             // Assert
             var ok = Assert.IsType<OkObjectResult>(result);
-            var actuales = Assert.IsAssignableFrom<IList<CompeticionParaInscripcionDTO>>(ok.Value);
+            var actuales = Assert.IsAssignableFrom<IList<GetInscripcionCompDTO>>(ok.Value);
             Assert.True(esperadas.SequenceEqual(actuales));
         }
 

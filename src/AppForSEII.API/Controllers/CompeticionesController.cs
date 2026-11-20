@@ -25,7 +25,7 @@ namespace AppForSEII.API.Controllers
         // GET: Competiciones/GetCompeticionesParaInscripcion
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(IList<CompeticionParaInscripcionDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IList<GetInscripcionCompDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetCompeticionesParaInscripcion(string? lugar, string? tipoDeporte)
         {
@@ -44,7 +44,7 @@ namespace AppForSEII.API.Controllers
 
             var competiciones = await consulta
                 .OrderBy(c => c.Nombre)
-                .Select(c => new CompeticionParaInscripcionDTO(
+                .Select(c => new GetInscripcionCompDTO(
                     c.Id,
                     c.Nombre,
                     c.TipoDeporte.Nombre,

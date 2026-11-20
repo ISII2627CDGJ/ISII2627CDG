@@ -40,8 +40,8 @@ namespace AppForSEII.API.Controllers
                     i.NombreUsuario,
                     i.ApellidosUsuario,
                     i.DNI,
+                    i.Email,
                     i.Telefono,
-                    i.MetodoPago,
                     i.CompeticionesInscritas.Select(ci => new CompeticionInscritaDTO(
                         ci.CompeticionId,
                         ci.Competicion.Nombre,
@@ -67,7 +67,7 @@ namespace AppForSEII.API.Controllers
         [Route("[action]")]
         [ProducesResponseType(typeof(InscripcionCompDetailDTO), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateInscripcion(InscripcionCompForCreateDTO inscripcionForCreate)
+        public async Task<IActionResult> CreateInscripcion(POSTInscripcionCompDTO inscripcionForCreate)
         {
             if (inscripcionForCreate.Competiciones.Count == 0)
             {
@@ -96,6 +96,7 @@ namespace AppForSEII.API.Controllers
                 inscripcionForCreate.NombreUsuario,
                 inscripcionForCreate.ApellidosUsuario,
                 inscripcionForCreate.DNI,
+                inscripcionForCreate.Email,
                 inscripcionForCreate.Telefono);
 
             var competicionesDTO = new List<CompeticionInscritaDTO>();
@@ -145,8 +146,8 @@ namespace AppForSEII.API.Controllers
                 inscripcion.NombreUsuario,
                 inscripcion.ApellidosUsuario,
                 inscripcion.DNI,
+                inscripcion.Email,
                 inscripcion.Telefono,
-                inscripcion.MetodoPago,
                 competicionesDTO);
 
             return CreatedAtAction(nameof(GetInscripcion), new { id = inscripcion.Id }, inscripcionDetail);

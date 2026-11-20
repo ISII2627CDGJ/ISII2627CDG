@@ -6,9 +6,8 @@ namespace AppForSEII.API.DTOs
     {
         public int CompeticionId { get; set; }
         public string Nombre { get; set; } = string.Empty;
-        public string NombreTipoDeporte { get; set; } = string.Empty;
+        public string TipoDeporte { get; set; } = string.Empty;
         public DateTime Fecha { get; set; }
-        public string Lugar { get; set; } = string.Empty;
         public decimal Precio { get; set; }
 
         [StringLength(200)]
@@ -23,9 +22,8 @@ namespace AppForSEII.API.DTOs
         {
             CompeticionId = competicionId;
             Nombre = nombre;
-            NombreTipoDeporte = nombreTipoDeporte;
+            TipoDeporte = nombreTipoDeporte;
             Fecha = fecha;
-            Lugar = lugar;
             Precio = precio;
             ProblemasFisicos = problemasFisicos;
         }
@@ -35,16 +33,15 @@ namespace AppForSEII.API.DTOs
             return obj is CompeticionInscritaDTO dto &&
                    CompeticionId == dto.CompeticionId &&
                    Nombre == dto.Nombre &&
-                   NombreTipoDeporte == dto.NombreTipoDeporte &&
+                   TipoDeporte == dto.TipoDeporte &&
                    Fecha == dto.Fecha &&
-                   Lugar == dto.Lugar &&
                    Precio == dto.Precio &&
                    ProblemasFisicos == dto.ProblemasFisicos;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(CompeticionId, Nombre, NombreTipoDeporte, Fecha, Lugar, Precio, ProblemasFisicos);
+            return HashCode.Combine(CompeticionId, Nombre, TipoDeporte, Fecha, Precio, ProblemasFisicos);
         }
     }
 }

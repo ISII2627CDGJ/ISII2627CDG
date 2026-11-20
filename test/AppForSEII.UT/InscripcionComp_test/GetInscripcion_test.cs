@@ -18,7 +18,7 @@ namespace AppForSEII.UT
             var futbol = new TipoDeporte(1,"Fútbol", "Fútbol", "Deporte de equipo","11vs11");
             var competicion = new Competicion("Torneo de fútbol", Fecha, "Albacete", 20, 10m, 1);
             var inscripcion = new InscripcionComp(FechaInscripcion, 10m, "Bizum",
-                "Elena", "Navarro Martínez", "12345678A", "600000000");
+                "Elena", "Navarro Martínez", "12345678A","elena@gmail.com", "600000000");
 
             _context.TipoDeporte.Add(futbol);
             _context.Competiciones.Add(competicion);
@@ -36,7 +36,7 @@ namespace AppForSEII.UT
             // Arrange
             var controller = new InscripcionesCompController(_context, NullLogger<InscripcionesCompController>.Instance);
             var esperado = new InscripcionCompDetailDTO(1, FechaInscripcion, "Elena", "Navarro Martínez",
-                "12345678A", "600000000", "Bizum",
+                "12345678A", "elena@gmail.com", "600000000",
                 new List<CompeticionInscritaDTO>
                 {
                     new CompeticionInscritaDTO(1, "Torneo de fútbol", "Fútbol", Fecha, "Albacete", 10m, "Ninguno")
