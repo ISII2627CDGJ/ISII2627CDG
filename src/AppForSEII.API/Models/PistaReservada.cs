@@ -2,9 +2,7 @@ namespace AppForSEII.API.Models;
 [PrimaryKey(nameof(IdPista), nameof(IdReserva))]
 public class PistaReservada
 {
-    [Key]
-    public int Id { get; set; }
-
+    
     [Required, StringLength(10, ErrorMessage = "La cantidad no puede tener más de 10 ")]
     public int Cantidad { get; set; }
 
@@ -35,7 +33,7 @@ public class PistaReservada
 
     public PistaReservada(int id, int cantidad, int idPista, int idReserva, string observaciones, decimal precio)
     {
-        Id = id;
+       
         Cantidad = cantidad;
         IdPista = idPista;
         IdReserva = idReserva;
@@ -49,8 +47,7 @@ public class PistaReservada
                 return false;
 
             var other = (PistaReservada)obj;
-            return Id == other.Id &&
-                   Cantidad == other.Cantidad &&
+            return Cantidad == other.Cantidad &&
                    IdPista == other.IdPista &&
                    IdReserva == other.IdReserva &&
                    Observaciones == other.Observaciones &&

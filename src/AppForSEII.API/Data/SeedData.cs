@@ -277,14 +277,18 @@ namespace AppForSEII.API.Data
 
         public static void SeedReservas(ApplicationDbContext dbContext)
         {
-            TipoDeporte tipoDeporte =
-                dbContext.TipoDeporte.First();
+            TipoDeporte tipoDeporte = dbContext.TipoDeporte.First();
 
+            ApplicationUser? usuario = dbContext.ApplicationUsers
+                .FirstOrDefault(u => u.UserName == "elena@uclm.es");
+
+            if (usuario == null)
+            {
+                return;
+            }
 
             // -------- PISTA --------
-
-            Pista? pista =
-                dbContext.Pistas.FirstOrDefault();
+            Pista? pista = dbContext.Pistas.FirstOrDefault();
 
             if (pista == null)
             {
@@ -300,56 +304,40 @@ namespace AppForSEII.API.Data
                 dbContext.Pistas.Add(pista);
             }
 
-
             // -------- RESERVA --------
-
-            Reserva? reserva =
-                dbContext.Reservas.FirstOrDefault();
+            Reserva? reserva = dbContext.Reservas.FirstOrDefault();
 
             if (reserva == null)
             {
                 reserva = new Reserva
                 {
-                    NombreCliente = "Elena",
-                    Apellidos = "Navarro Martínez",
-                    Dni = "12345678A",
                     FechaReserva = DateTime.Now.AddDays(1),
                     MetodoPago = MetodoPago.Bizum,
-                    PrecioTotal = 20.00
+                    PrecioTotal = 20.00,
+                    Cliente = usuario
                 };
 
                 dbContext.Reservas.Add(reserva);
             }
 
-
             // Necesitamos los IDs de Pista y Reserva
-
             dbContext.SaveChanges();
 
-
             // -------- PISTA RESERVADA --------
-
             if (!dbContext.PistaReservada.Any())
             {
-                PistaReservada pistaReservada =
-                    new PistaReservada
-                    {
-                        Cantidad = 1,
-
-                        IdPista = pista.IdPista,
-                        IdReserva = reserva.Id,
-
-                        Observaciones =
-                            "Reserva inicial de pista",
-
-                        Precio = 20.00m,
-
-                        Pista = pista,
-                        Reserva = reserva
-                    };
+                PistaReservada pistaReservada = new PistaReservada
+                {
+                    Cantidad = 1,
+                    IdPista = pista.IdPista,
+                    IdReserva = reserva.IdReserva,
+                    Observaciones = "Reserva inicial de pista",
+                    Precio = 20.00m,
+                    Pista = pista,
+                    Reserva = reserva
+                };
 
                 dbContext.PistaReservada.Add(pistaReservada);
-
                 dbContext.SaveChanges();
             }
         }

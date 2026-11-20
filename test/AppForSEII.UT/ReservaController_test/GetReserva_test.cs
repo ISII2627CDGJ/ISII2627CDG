@@ -19,15 +19,26 @@ namespace AppForSEII.UT.ReservaController_test
             var tipo = new TipoDeporte { Id = 1, Nombre = "Fútbol" };
             var pista = new Pista { IdPista = 1, NombrePista = "Campo 1", NPersonas = "22", Precio = 50.0, Stock = 1, TipoDeporte = tipo };
 
-            var reserva = new Reserva(
-                1,
-                "García",
-                "12345678A",
-                DateTime.Today,
-                MetodoPago.Tarjeta,
-                "María",
-                50.0,
-                new List<PistaReservada>()
+            var usuario = new ApplicationUser(
+    "1",
+    "María",
+    "García",
+    "elena.navarro@uclm.es",
+    "12345678A",
+    25,
+    "Mujer"
+)
+{
+    PhoneNumber = "666555444"
+};
+
+        var reserva = new Reserva(
+            1,
+            DateTime.Today.AddDays(1),
+             MetodoPago.Tarjeta,
+            12.0,
+            usuario,
+            new List<PistaReservada>()
             );
 
             reserva.PistasReservadas.Add(new PistaReservada
@@ -65,7 +76,7 @@ namespace AppForSEII.UT.ReservaController_test
             Assert.Equal(1, actualDTO.Id);
             Assert.Equal("María", actualDTO.NombreUsuario);
             Assert.Equal("García", actualDTO.ApellidosUsuario);
-            Assert.Equal(50.0, actualDTO.PrecioTotal);
+            Assert.Equal(12.0, actualDTO.PrecioTotal);
         }
 
         [Fact]
