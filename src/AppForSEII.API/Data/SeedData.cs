@@ -352,7 +352,16 @@ namespace AppForSEII.API.Data
         {
             TipoDeporte tipoDeporte =
                 dbContext.TipoDeporte.First();
+                            ApplicationUser? usuario =
+                dbContext.ApplicationUsers
+                    .FirstOrDefault(
+                        u => u.UserName == "elena@uclm.es"
+                    );
 
+            if (usuario == null)
+            {
+                return;
+            }
 
             // -------- COMPETICIÓN --------
 
@@ -390,12 +399,7 @@ namespace AppForSEII.API.Data
 
                     MetodoPago = "Bizum",
 
-                    NombreUsuario = "Elena",
-                    ApellidosUsuario = "Navarro Martínez",
-
-                    DNI = "12345678A",
-                    Email = "elena@gmail.com",
-                    Telefono = "600000000"
+                    Cliente = usuario
                 };
 
                 dbContext.InscripcionesComp.Add(inscripcion);

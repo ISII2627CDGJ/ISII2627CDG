@@ -37,11 +37,11 @@ namespace AppForSEII.API.Controllers
                 .Select(i => new InscripcionCompDetailDTO(
                     i.Id,
                     i.FechaInscripcion,
-                    i.NombreUsuario,
-                    i.ApellidosUsuario,
-                    i.DNI,
-                    i.Email,
-                    i.Telefono,
+                    i.Cliente.Name ?? string.Empty,
+                    i.Cliente.Surname ?? string.Empty,
+                    i.Cliente.DNI ?? string.Empty,
+                    i.Cliente.Email ?? string.Empty,
+                    i.Cliente.PhoneNumber ?? string.Empty,
                     i.CompeticionesInscritas.Select(ci => new CompeticionInscritaDTO(
                         ci.CompeticionId,
                         ci.Competicion.Nombre,
@@ -82,7 +82,14 @@ namespace AppForSEII.API.Controllers
             {
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
+                        var cliente = await _context.ApplicationUsers
+                .FirstOrDefaultAsync(u => u.UserName == inscripcionForCreate.Email || u.Email == inscripcionForCreate.Email);
 
+            if (cliente == null)
+            {
+                ModelState.AddModelError("Email", $"¡Error! El usuario con email '{inscripcionForCreate.Email}' no está registrado.");
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
             var ids = inscripcionForCreate.Competiciones.Select(c => c.CompeticionId).ToList();
             var competiciones = await _context.Competiciones
                 .Include(c => c.TipoDeporte)
@@ -93,11 +100,7 @@ namespace AppForSEII.API.Controllers
                 DateTime.Now,
                 0m,
                 inscripcionForCreate.MetodoPago,
-                inscripcionForCreate.NombreUsuario,
-                inscripcionForCreate.ApellidosUsuario,
-                inscripcionForCreate.DNI,
-                inscripcionForCreate.Email,
-                inscripcionForCreate.Telefono);
+                cliente);
 
             var competicionesDTO = new List<CompeticionInscritaDTO>();
             decimal precioTotal = 0m;
@@ -130,7 +133,6 @@ namespace AppForSEII.API.Controllers
                         item.ProblemasFisicos));
                 }
             }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(new ValidationProblemDetails(ModelState));
@@ -143,11 +145,11 @@ namespace AppForSEII.API.Controllers
             var inscripcionDetail = new InscripcionCompDetailDTO(
                 inscripcion.Id,
                 inscripcion.FechaInscripcion,
-                inscripcion.NombreUsuario,
-                inscripcion.ApellidosUsuario,
-                inscripcion.DNI,
-                inscripcion.Email,
-                inscripcion.Telefono,
+                cliente.Name ?? string.Empty,
+                cliente.Surname ?? string.Empty,
+                cliente.DNI ?? string.Empty,
+                cliente.Email ?? string.Empty,
+                cliente.PhoneNumber ?? string.Empty,
                 competicionesDTO);
 
             return CreatedAtAction(nameof(GetInscripcion), new { id = inscripcion.Id }, inscripcionDetail);

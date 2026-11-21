@@ -14,32 +14,13 @@ public class InscripcionComp
 
     [Required]
     [StringLength(50)]
-    public string NombreUsuario { get; set; }
-
-    [Required]
-    [StringLength(100)]
-    public string ApellidosUsuario { get; set; }
-
-    [Required]
-    [StringLength(9)]
-    public string DNI { get; set; }
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; }
-
-    [Required]
-    [Phone]
-    public string Telefono { get; set; }
-    public InscripcionComp(DateTime fechaInscripcion, decimal precioTotal, string metodoPago, string nombreUsuario, string apellidosUsuario, string dni, string email, string telefono)
-    {
+        // Relación N-1 con el cliente: los datos personales se leen de ApplicationUser
+    public ApplicationUser Cliente { get; set; } = null!;
+    public InscripcionComp(DateTime fechaInscripcion, decimal precioTotal, string metodoPago, ApplicationUser cliente){
         FechaInscripcion = fechaInscripcion;
         PrecioTotal = precioTotal;
         MetodoPago = metodoPago;
-        NombreUsuario = nombreUsuario;
-        ApellidosUsuario = apellidosUsuario;
-        DNI = dni;
-        Email = email;
-        Telefono = telefono;
+        Cliente = cliente;
     }
     public IList<CompeticionInscrita> CompeticionesInscritas { get; set; } = new List<CompeticionInscrita>();
     public InscripcionComp()
@@ -49,16 +30,16 @@ public class InscripcionComp
     {
         if (obj is InscripcionComp other)
         {
-            return Id == other.Id &&
+            return obj is InscripcionComp &&
+                   Id == other.Id &&
                    FechaInscripcion == other.FechaInscripcion &&
                    PrecioTotal == other.PrecioTotal &&
-                   MetodoPago == other.MetodoPago &&
-                   NombreUsuario == other.NombreUsuario &&
-                   ApellidosUsuario == other.ApellidosUsuario &&
-                   DNI == other.DNI &&
-                   Email == other.Email &&
-                   Telefono == other.Telefono;
+                   MetodoPago == other.MetodoPago;
         }
         return false;
+        
+    }
+    public override int GetHashCode(){
+        return HashCode.Combine(Id, FechaInscripcion, PrecioTotal, MetodoPago);
     }
 }
