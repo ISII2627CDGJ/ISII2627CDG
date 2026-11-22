@@ -576,6 +576,16 @@ namespace AppForSEII.API.Data
             TipoMaterial tipoMaterial =
                 dbContext.TiposMaterial.First();
 
+                        ApplicationUser? usuario =
+                dbContext.ApplicationUsers
+                    .FirstOrDefault(
+                        u => u.UserName == "elena@uclm.es"
+                    );
+
+            if (usuario == null)
+            {
+                return;
+            }
 
             // -------- MATERIAL --------
 
@@ -616,26 +626,18 @@ namespace AppForSEII.API.Data
             {
                 alquiler = new Alquiler
                 {
-                    NombreUsuario =
-                        "Elena",
-
-                    ApellidosUsuario =
-                        "Navarro Martínez",
-
-                    DNI =
-                        "12345678A",
-
+                   
                     FechaAlquiler =
                         DateTime.Now,
 
                     MetodoPago =
                         "Bizum",
 
-                    NumeroTelefono =
-                        "600000000",
-
                     PrecioTotal =
-                        5.00m
+                        5.00m,
+                    
+                    Cliente= 
+                        usuario
                 };
 
 

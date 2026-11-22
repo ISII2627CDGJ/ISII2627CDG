@@ -7,6 +7,15 @@ namespace AppForSEII.API.DTOs.MaterialDTOs
     {
         public int IdAlquiler { get; set; }
 
+        //Como el DTO de creacion ya no tiene estos Atributos, los tiene ApplicationUser, este DTO ahora los necesita
+
+        public string NombreUsuario { get; set; } = string.Empty;
+
+        public string ApellidosUsuario { get; set; } = string.Empty;
+
+        public string DNI { get; set; } = string.Empty;
+
+        public string NumeroTelefono { get; set; } = string.Empty;  
         public decimal PrecioTotal { get; set; }
 
         public override bool Equals(object? obj)
@@ -14,6 +23,10 @@ namespace AppForSEII.API.DTOs.MaterialDTOs
             return obj is AlquilerDetailDTO dto &&
                    base.Equals(obj) &&
                    IdAlquiler == dto.IdAlquiler &&
+                   NombreUsuario == dto.NombreUsuario &&
+                   ApellidosUsuario == dto.ApellidosUsuario &&
+                   DNI == dto.DNI &&
+                   NumeroTelefono == dto.NumeroTelefono &&
                    PrecioTotal == dto.PrecioTotal;
         }
 
@@ -22,6 +35,10 @@ namespace AppForSEII.API.DTOs.MaterialDTOs
             HashCode hash = new HashCode();
             hash.Add(base.GetHashCode());
             hash.Add(IdAlquiler);
+            hash.Add(NombreUsuario);
+            hash.Add(ApellidosUsuario);
+            hash.Add(DNI);
+            hash.Add(NumeroTelefono);
             hash.Add(PrecioTotal);
             return hash.ToHashCode();
         }
