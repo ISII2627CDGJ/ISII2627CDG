@@ -17,10 +17,14 @@ namespace AppForSEII.UT
             
             var futbol = new TipoDeporte(1,"Fútbol", "Fútbol", "Deporte de equipo","11vs11");
             var competicion = new Competicion("Torneo de fútbol", Fecha, "Albacete", 20, 10m, 1);
-            var inscripcion = new InscripcionComp(FechaInscripcion, 10m, "Bizum",
-                "Elena", "Navarro Martínez", "12345678A","elena@gmail.com", "600000000");
+            var usuario = new ApplicationUser("1", "Elena", "Navarro Martínez", "elena@gmail.com", "12345678A", 25, "Mujer")
+            {
+                PhoneNumber = "600000000"
+            };
+            var inscripcion = new InscripcionComp(FechaInscripcion, 10m, "Bizum",usuario);
 
             _context.TipoDeporte.Add(futbol);
+            _context.ApplicationUsers.Add(usuario);
             _context.Competiciones.Add(competicion);
             _context.InscripcionesComp.Add(inscripcion);
             _context.SaveChanges();   // genera los Ids (1 y 1)

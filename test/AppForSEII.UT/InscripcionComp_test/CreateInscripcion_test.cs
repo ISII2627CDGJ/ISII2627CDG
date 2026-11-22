@@ -15,6 +15,11 @@ namespace AppForSEII.UT
         {
             var futbol = new TipoDeporte(1, "Fútbol", "Fútbol", "Deporte de equipo", "11vs11");
             _context.TipoDeporte.Add(futbol);
+                        var usuario = new ApplicationUser("1", "Elena", "Navarro Martínez", "elena@gmail.com", "12345678A", 25, "Mujer")
+            {
+                PhoneNumber = "600000000"
+            };
+            _context.ApplicationUsers.Add(usuario);
 
             // Ids esperados (BD nueva por test): 1, 2 y 3
             _context.Competiciones.AddRange(
@@ -80,12 +85,23 @@ namespace AppForSEII.UT
         {
             // Arrange
             var controller = new InscripcionesCompController(_context, NullLogger<InscripcionesCompController>.Instance);
-            var peticion = new POSTInscripcionCompDTO("Elena", "Navarro Martínez", "12345678A", "elena@mail.com", "600000000", "Bizum", "600000000", competiciones);
+            var peticion = new POSTInscripcionCompDTO("Elena", "Navarro Martínez", "12345678A", "elena@gmail.com", "600000000", "Bizum", "600000000", competiciones);
 
             // Act
             var result = await controller.CreateInscripcion(peticion);
 
             // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+                [Fact]
+        public async Task CreateInscripcion_UsuarioNoRegistrado_test(){
+            var controller = new InscripcionesCompController(_context, NullLogger<InscripcionesCompController>.Instance);
+            var competicionesPedidas = new List<CompeticionInscritaDTO>
+            {
+                new CompeticionInscritaDTO(1, "Torneo de fútbol", "Fútbol", Fecha, "Albacete", 10m, null)
+            };
+            var peticion = new POSTInscripcionCompDTO("Elena", "Navarro Martínez", "12345678A", "noexiste@gmail.com", "600000000", "Bizum", "600000000", competicionesPedidas);
+            var result = await controller.CreateInscripcion(peticion);
             Assert.IsType<BadRequestObjectResult>(result);
         }
     }
