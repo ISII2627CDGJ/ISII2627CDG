@@ -36,10 +36,11 @@ namespace AppForSEII.API.Controllers
                 .Select(a => new AlquilerDetailDTO
                 {
                     IdAlquiler = a.IdAlquiler,
-                    NombreUsuario = a.NombreUsuario,
-                    ApellidosUsuario = a.ApellidosUsuario,
-                    DNI = a.DNI,
-                    NumeroTelefono = a.NumeroTelefono,
+                    NombreUsuario = a.Cliente.Name ?? string.Empty,
+                    ApellidosUsuario = a.Cliente.Surname ?? string.Empty,
+                    DNI = a.Cliente.DNI ?? string.Empty,
+                    Email = a.Cliente.Email ?? string.Empty,
+                    NumeroTelefono = a.Cliente.PhoneNumber ?? string.Empty,
                     FechaAlquiler = a.FechaAlquiler,
                     MetodoPago = a.MetodoPago,
                     PrecioTotal = a.PrecioTotal,
@@ -101,6 +102,15 @@ namespace AppForSEII.API.Controllers
                     new ValidationProblemDetails(ModelState));
             }
 
+            var cliente = await _context.ApplicationUsers
+                .FirstOrDefaultAsync(u => u.UserName == alquilerForCreate.Email || u.Email == alquilerForCreate.Email);
+
+
+            if (cliente == null)
+            {
+                ModelState.AddModelError("Email", $"El usuario con email '{alquilerForCreate.Email}' no está registrado.");
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
             var items = alquilerForCreate.MaterialesAlquilados;
 
             //  Comprobar las cantidades
@@ -160,10 +170,7 @@ namespace AppForSEII.API.Controllers
             // 4. Crear el alquiler
             var alquiler = new Alquiler
             {
-                NombreUsuario = alquilerForCreate.NombreUsuario,
-                ApellidosUsuario = alquilerForCreate.ApellidosUsuario,
-                DNI = alquilerForCreate.DNI,
-                NumeroTelefono = alquilerForCreate.NumeroTelefono,
+                Cliente=cliente,
                 FechaAlquiler = alquilerForCreate.FechaAlquiler,
                 MetodoPago = alquilerForCreate.MetodoPago,
                 PrecioTotal = 0,

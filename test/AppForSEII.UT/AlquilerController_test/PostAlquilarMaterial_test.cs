@@ -15,11 +15,9 @@ namespace AppForSEII.UT.AlquilerController_test
     public class PostAlquilarMaterial_test : AppForSEII4SqliteUT
     {
         // Datos comunes para las pruebas
-        private const string _nombreUsuario = "Jose";
-        private const string _apellidosUsuario = "Iniesta";
-        private const string _dni = "12345678Z";
-        private const string _numeroTelefono = "600123456";
+        private const string _email = "elena@uclm.es";
         private const string _metodoPago = "Tarjeta";
+        
 
         // Constructor de la clase de pruebas
         public PostAlquilarMaterial_test()
@@ -32,10 +30,7 @@ namespace AppForSEII.UT.AlquilerController_test
             // Caso 1: alquiler sin materiales
             var alquilerSinMateriales = new AlquilerForCreateDTO
             {
-                NombreUsuario = _nombreUsuario,
-                ApellidosUsuario = _apellidosUsuario,
-                DNI = _dni,
-                NumeroTelefono = _numeroTelefono,
+                Email=_email,
                 FechaAlquiler = DateTime.Today.AddDays(1),
                 MetodoPago = _metodoPago,
                 MaterialesAlquilados = new List<MaterialAlquiladoItemDTO>()
@@ -44,13 +39,22 @@ namespace AppForSEII.UT.AlquilerController_test
             // Caso 2: fecha anterior a hoy
             var alquilerFechaIncorrecta = new AlquilerForCreateDTO
             {
-                NombreUsuario = _nombreUsuario,
-                ApellidosUsuario = _apellidosUsuario,
-                DNI = _dni,
-                NumeroTelefono = _numeroTelefono,
+                Email=_email,
                 FechaAlquiler = DateTime.Today.AddDays(-1),
                 MetodoPago = _metodoPago,
                 MaterialesAlquilados = new List<MaterialAlquiladoItemDTO>()
+            };
+
+                        // Caso 3: el usuario no está registrado
+            var alquilerUsuarioNoExiste = new AlquilerForCreateDTO
+            {
+                Email = "noexiste@uclm.es",
+                FechaAlquiler = DateTime.Today.AddDays(1),
+                MetodoPago = _metodoPago,
+                MaterialesAlquilados = new List<MaterialAlquiladoItemDTO>
+                {
+                    new MaterialAlquiladoItemDTO(1, "Balon de futbol", "Balones", "Futbol", 1, 5.00m)
+                }
             };
 
             var allTests = new List<object[]>
@@ -64,6 +68,11 @@ namespace AppForSEII.UT.AlquilerController_test
                 {
                     alquilerFechaIncorrecta,
                     "La fecha del alquiler no puede ser anterior a hoy."
+                },
+                new object[]
+                {
+                    alquilerUsuarioNoExiste,
+                    "El usuario con email 'noexiste@uclm.es'"
                 }
             };
 

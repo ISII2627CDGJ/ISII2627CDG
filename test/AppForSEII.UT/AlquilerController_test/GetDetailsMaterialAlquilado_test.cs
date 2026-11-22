@@ -16,21 +16,23 @@ namespace AppForSEII.UT.AlquilerController_test
     {
         public GetDetailsMaterialAlquilado_test()
         {
-            // Crear un alquiler de prueba
+            // Crear el cliente y un alquiler de prueba
+            var usuario = new ApplicationUser("1", "Elena", "Navarro", "elena@uclm.es", "12345678Z", 25, "Mujer")
+            {
+                PhoneNumber = "600123456"
+            };
             var alquiler = new Alquiler()
             {
                 IdAlquiler = 1,
-                NombreUsuario = "Elena",
-                ApellidosUsuario = "Navarro",
-                DNI = "12345678Z",
-                NumeroTelefono = "600123456",
                 FechaAlquiler = new DateTime(2026, 11, 6),
                 MetodoPago = "Tarjeta",
                 PrecioTotal = 20.00m,
+                Cliente=usuario,
                 MaterialesAlquilados = new List<MaterialAlquilado>()
             };
 
             // Guardar el alquiler en SQLite
+            _context.ApplicationUsers.Add(usuario);
             _context.Alquileres.Add(alquiler);
             _context.SaveChanges();
         }
@@ -70,6 +72,7 @@ namespace AppForSEII.UT.AlquilerController_test
                 NombreUsuario = "Elena",
                 ApellidosUsuario = "Navarro",
                 DNI = "12345678Z",
+                Email="elena@uclm.es",
                 NumeroTelefono = "600123456",
                 FechaAlquiler = new DateTime(2026, 11, 6),
                 MetodoPago = "Tarjeta",
